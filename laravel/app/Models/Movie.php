@@ -22,5 +22,11 @@ class Movie extends Model
     {
         return $this->belongsTo(File::class);
     }
-    
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+
 }

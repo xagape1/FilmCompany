@@ -23,7 +23,7 @@ class User extends Authenticatable
     use HasRoles;
 
     public $guard_name = 'web';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -73,13 +73,9 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function reviews()
+    public function user()
     {
         return $this->hasMany(Review::class, 'author_id');
-    }
-    public function profiles()
-    {
-        return $this->hasMany(Profile::class, 'author_id');
     }
 
 }

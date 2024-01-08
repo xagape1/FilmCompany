@@ -46,6 +46,52 @@ $configData = Helper::appClasses();
             </table>
         </div>
     </div>
+
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 ">
+                <div class="card ">
+                    <div class="card-header ">
+                        <h1 class="text-center h2 fw-bold">Añadir Valoración</h1>
+                    </div>
+                    <form method="post" class="separar"
+                        action="{{ route('movies.reviews.store', ['movie' => $movie]) }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="description">{{ __('Description') }}</label>
+                            <textarea id="description" name="description" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
+                        <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="linea-inferior text-center fw-bold">Valoraciones</h1>
+                        @foreach ($reviews as $review)
+                        <div class="row linea-inferior">
+                            <div class="border col-md-8">
+                                <td> {{ $review->user->name }}</td>
+                                <br>
+                                {{ $review->description }}
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @role('admin')
     <div class="showtexto">
         <!-- Buttons -->

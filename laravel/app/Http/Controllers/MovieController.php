@@ -118,6 +118,8 @@ class MovieController extends Controller
         return view('movies.show', [
             'movie' => $movie,
             "files" => File::all(),
+            'reviews' => $movie->reviews,
+            
         ]);
     }
 

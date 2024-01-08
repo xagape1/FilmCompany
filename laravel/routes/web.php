@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MovieController;
@@ -39,3 +40,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::delete('/movies/{movie}', [MovieController::class, 'destroy'])->name('movies.destroy');
     Route::get('/movies/{movie}/edit', [MovieController::class, 'edit'])->name('movies.edit');
 });
+
+Route::resource('movies.reviews', ReviewsController::class)->middleware(['auth']);
