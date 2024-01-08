@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\FileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,5 +32,13 @@ $controller_path = 'App\Http\Controllers';
     Route::get('/', $controller_path . '\pages\HomePage@index')->name('pages-home');
     Route::get('/page-2', $controller_path . '\pages\Page2@index')->name('pages-page-2');
 
-    
 });
+
+Route::resource('files', FileController::class)
+->middleware(['auth']);
+
+
+Route::resource('movies', MovieController::class)->middleware(['auth']);
+
+
+

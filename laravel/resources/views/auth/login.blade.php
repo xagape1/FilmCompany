@@ -18,11 +18,13 @@ $customizerHidden = 'customizer-hide';
     <!-- /Left Text -->
     <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center">
       <div class="flex-row text-center mx-auto">
-        {{-- <img src="{{asset('assets/img/pages/login-'.$configData['style'].'.png')}}" alt="Auth Cover Bg color" width="520" class="img-fluid authentication-cover-img" data-app-light-img="pages/login-light.png" data-app-dark-img="pages/login-dark.png"> --}}
+        {{-- <img src="{{asset('assets/img/pages/login-'.$configData['style'].'.png')}}" alt="Auth Cover Bg color"
+          width="520" class="img-fluid authentication-cover-img" data-app-light-img="pages/login-light.png"
+          data-app-dark-img="pages/login-dark.png"> --}}
         <div class="mx-auto">
-          <h3>Discover the powerful admin template 🥳</h3>
+          <h3>Discover the best place for movies 😎</h3>
           <p>
-            Perfectly suited for all level of developers which helps you to <br> kick start your next big projects & Applications.
+            Enjoy this entertaining place for movie fans <br> kick start your next big story.
           </p>
         </div>
       </div>
@@ -55,7 +57,8 @@ $customizerHidden = 'customizer-hide';
           @csrf
           <div class="mb-3">
             <label for="login-email" class="form-label">Email</label>
-            <input type="text" class="form-control @error('email') is-invalid @enderror" id="login-email" name="email" placeholder="john@example.com" autofocus value="{{ old('email') }}">
+            <input type="text" class="form-control @error('email') is-invalid @enderror" id="login-email" name="email"
+              placeholder="john@example.com" autofocus value="{{ old('email') }}">
             @error('email')
             <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>
@@ -72,7 +75,9 @@ $customizerHidden = 'customizer-hide';
               @endif
             </div>
             <div class="input-group input-group-merge">
-              <input type="password" id="login-password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+              <input type="password" id="login-password" class="form-control @error('password') is-invalid @enderror"
+                name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password" />
               <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
               @error('password')
               <span class="invalid-feedback" role="alert">
@@ -83,7 +88,8 @@ $customizerHidden = 'customizer-hide';
           </div>
           <div class="mb-3">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="remember-me" name="remember" {{ old('remember') ? 'checked' : '' }}>
+              <input class="form-check-input" type="checkbox" id="remember-me" name="remember" {{ old('remember')
+                ? 'checked' : '' }}>
               <label class="form-check-label" for="remember-me">
                 Remember Me
               </label>

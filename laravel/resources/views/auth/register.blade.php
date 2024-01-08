@@ -18,11 +18,13 @@ $customizerHidden = 'customizer-hide';
     <!-- /Left Text -->
     <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center">
       <div class="flex-row text-center mx-auto">
-        {{-- <img src="{{asset('assets/img/pages/register-'.$configData['style'].'.png')}}" alt="Auth Cover Bg color" width="520" class="img-fluid authentication-cover-img" data-app-light-img="pages/register-light.png" data-app-dark-img="pages/register-dark.png"> --}}
+        {{-- <img src="{{asset('assets/img/pages/register-'.$configData['style'].'.png')}}" alt="Auth Cover Bg color"
+          width="520" class="img-fluid authentication-cover-img" data-app-light-img="pages/register-light.png"
+          data-app-dark-img="pages/register-dark.png"> --}}
         <div class="mx-auto">
           <h3>A few clicks to get started 🚀</h3>
           <p>
-            Let’s get started with your 14 days free trial and <br> start building your application today.
+            Enjoy this entertaining place for movie fans <br> kick start your next big story.
           </p>
         </div>
       </div>
@@ -43,13 +45,14 @@ $customizerHidden = 'customizer-hide';
 
         <!-- Register Card -->
         <h4 class="mb-2">Adventure starts here 🚀</h4>
-        <p class="mb-4">Make your app management easy and fun!</p>
+        <p class="mb-4">Your favorite movies are here, register! </p>
 
         <form id="formAuthentication" class="mb-3" action="{{ route('register') }}" method="POST">
           @csrf
           <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" id="username" name="name" placeholder="johndoe" autofocus value="{{ old('name') }}" />
+            <input type="text" class="form-control @error('name') is-invalid @enderror" id="username" name="name"
+              placeholder="johndoe" autofocus value="{{ old('name') }}" />
             @error('name')
             <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>
@@ -58,7 +61,8 @@ $customizerHidden = 'customizer-hide';
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="john@example.com" value="{{ old('email') }}" />
+            <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
+              placeholder="john@example.com" value="{{ old('email') }}" />
             @error('email')
             <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>
@@ -68,7 +72,9 @@ $customizerHidden = 'customizer-hide';
           <div class="mb-3 form-password-toggle">
             <label class="form-label" for="password">Password</label>
             <div class="input-group input-group-merge @error('password') is-invalid @enderror">
-              <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+              <input type="password" id="password" class="form-control @error('password') is-invalid @enderror"
+                name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password" />
               <span class="input-group-text cursor-pointer">
                 <i class="bx bx-hide"></i>
               </span>
@@ -83,7 +89,9 @@ $customizerHidden = 'customizer-hide';
           <div class="mb-3 form-password-toggle">
             <label class="form-label" for="password-confirm">Confirm Password</label>
             <div class="input-group input-group-merge">
-              <input type="password" id="password-confirm" class="form-control" name="password_confirmation" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+              <input type="password" id="password-confirm" class="form-control" name="password_confirmation"
+                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password" />
               <span class="input-group-text cursor-pointer">
                 <i class="bx bx-hide"></i>
               </span>
