@@ -3,13 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Role;
 
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use App\Models\User;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -17,11 +16,36 @@ return new class extends Migration
      */
     public function up()
     {
-        $role1 = Role::create(['name' => 'admin']);
-        $role2 = Role::create(['name' => 'default']);
-        
-        $user = User::find(1);
-        $user->assignRole($role1);
+        // Create roles table
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->timestamps();
+        });
+
+        // Call seeder
+        Artisan::call('db:seed', [
+            '--class' => 'RoleSeeder',
+            '--force' => true // <--- add this line
+        ]);
+
+        // Update users table
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('role_id')
+                ->nullable()
+                ->default(Role::NEW );
+            $table->foreign('role_id')
+                ->references('id')->on('roles')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
+        });
+
+        // Update old users with default role
+        DB::update(
+            "UPDATE users
+             SET role_id = " . Role::NEW . "
+             WHERE role_id IS NULL",
+        );
     }
 
     /**
@@ -31,5 +55,11 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['role_id']);
+            $table->dropColumn('role_id');
+        });
+
+        Schema::dropIfExists('roles');
     }
 };
