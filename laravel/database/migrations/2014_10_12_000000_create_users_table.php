@@ -36,6 +36,16 @@ return new class extends Migration {
         ]);
         $admin->save();
 
+        $pay = new User([
+            'name' => 'ramon',
+            'email' => 'ramon@gmail.com',
+            'email_verified_at' => Carbon::now(),
+            'password' => Hash::make(env('ADMIN_PASSWORD')),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        $pay->save();
+
     }
 
     /**

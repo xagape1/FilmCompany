@@ -46,7 +46,7 @@ $configData = Helper::appClasses();
             </table>
         </div>
     </div>
-
+    @role('admin')
     <div class="showtexto">
         <!-- Buttons -->
         <div class="container" style="margin-bottom:20px">
@@ -81,4 +81,5 @@ $configData = Helper::appClasses();
             </div>
         </div>
     </div>
+    @endrole
     @endsection

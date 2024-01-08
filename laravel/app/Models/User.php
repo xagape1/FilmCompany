@@ -35,6 +35,14 @@ class User extends Authenticatable
         'password',
     ];
 
+    // protected static function booted()
+    // {
+    //     static::created(function ($user) {
+    //         // Asignar el rol por defecto al usuario recién creado
+    //         $user->assignRole('new');
+    //     });
+    // }
+
     /**
      * The attributes that should be hidden for serialization.
      *

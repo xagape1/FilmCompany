@@ -8,6 +8,10 @@ $configData = Helper::appClasses();
 
 @section('content')
 
+@role('admin|pay')
+
 @include('movies.index')
+
+@endrole
 
 @endsection

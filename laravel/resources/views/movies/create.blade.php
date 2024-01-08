@@ -39,8 +39,8 @@ $configData = Helper::appClasses();
                             <label for="intro">{{ __('MOVIE') }}</label>
                             <input type="file" id="intro" name="intro" class="form-control" />
                         </div>
-                        <button type="submit" class="btn btn-primary">{{ __('fields.Create') }}</button>
-                        <button type="reset" class="btn btn-secondary">{{ __('fields.Reset') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
+                        <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
                     </form>
                 </div>
             </div>

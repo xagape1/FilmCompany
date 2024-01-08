@@ -12,7 +12,7 @@ $configData = Helper::appClasses();
 @section('title', 'Home')
 
 @section('content')
-
+@role('admin|pay')
 <div class="container">
     @if(count($movies) <= 0) <p>No se encontraron películas.</p>
         @else
@@ -30,7 +30,6 @@ $configData = Helper::appClasses();
         @endforeach
         @endif
 </div>
-
-
+@endrole
 
 @endsection
