@@ -17,7 +17,7 @@ $configData = Helper::appClasses();
 <div class="card">
     <table class="tableshowtexto">
         <tr>
-            <td class="titlemovie"><strong>{{ $movie->title }}</strong></td>
+            <h1 class="text h2 fw-bold">{{ $movie->title }}</strong></h1>
         </tr>
 
         </tbody>
@@ -47,47 +47,64 @@ $configData = Helper::appClasses();
         </div>
     </div>
 
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 ">
-                <div class="card ">
-                    <div class="card-header ">
-                        <h1 class="text-center h2 fw-bold">Añadir Valoración</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8 ">
+            <div class="card ">
+                <h1 class="text-center h2 fw-bold">Write your Review!!</h1>
+                <form method="post" class="separar" action="{{ route('movies.reviews.store', ['movie' => $movie]) }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <textarea id="description" name="description" class="form-control"></textarea>
                     </div>
-                    <form method="post" class="separar"
-                        action="{{ route('movies.reviews.store', ['movie' => $movie]) }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="description">{{ __('Description') }}</label>
-                            <textarea id="description" name="description" class="form-control"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
-                        <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
-                    </form>
-
-                </div>
+                    <button type="submit" class="btn btn-primary">{{ __('Add Review') }}</button>
+                    <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
+                </form>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h1 class="linea-inferior text-center fw-bold">Valoraciones</h1>
-                        @foreach ($reviews as $review)
-                        <div class="row linea-inferior">
-                            <div class="border col-md-8">
-                                <td> {{ $review->user->name }}</td>
-                                <br>
-                                {{ $review->description }}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <h1 class="linea-inferior text-center fw-bold">Reviews</h1>
+                @if(count($reviews) <= 0) <p>There are no reviews, write your opinion about the movie!!</p>
+
+                    @foreach ($reviews as $review)
+                    <div class="row linea-inferior">
+                        <div class="card border col-md-8">
+                            <div class="d-flex flex-column justify-content-between align-items-start">
+                                <div>
+                                    <p><strong>{{ $review->user->name }}</strong></p>
+                                    <p style="overflow-y: auto; max-height: 200px;">{{ $review->description }}</p>
+                                </div>
+                                @if(auth()->user()->hasRole('admin') || $review->author_id == $id)
+                                <form id="form" method="POST"
+                                    action="{{ route('movies.reviews.destroy', [$movie, $review]) }}"
+                                    style="display: inline-block;">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#confirmModal">🗑️ {{ __('Delete Review') }}</button>
+                                </form>
+                                <div>
+                                    <div>
+                                        <td><strong>{{ __('Created') }}</strong></td>
+                                        <td>{{ $review->created_at }}</td>
+                                    </div>
+                                    <div>
+                                        <td><strong>{{ __('Updated') }}</strong></td>
+                                        <td>{{ $review->updated_at }}</td>
+                                    </div>
+
+                                </div>
+                                @endif
                             </div>
                         </div>
-                        @endforeach
                     </div>
-                </div>
+                    @endforeach
+                    @endif
+
             </div>
         </div>
     </div>
@@ -95,16 +112,14 @@ $configData = Helper::appClasses();
     @role('admin')
     <div class="showtexto">
         <!-- Buttons -->
-        <div class="container" style="margin-bottom:20px">
-            <a class="btn btn-warning" href="{{ route('movies.edit', $movie) }}" role="button">📝 {{ __('Edit')
-                }}</a>
-            <form id="form" method="POST" action="{{ route('movies.destroy', $movie) }}" style="display: inline-block;">
-                @csrf
-                @method("DELETE")
-                <button id="destroy" type="submit" class="btn btn-danger" data-bs-toggle="modal"
-                    data-bs-target="#confirmModal">🗑️ {{ __('Delete') }}</button>
-            </form>
-        </div>
+        <a class="btn btn-secondary" href="{{ route('movies.edit', $movie) }}" role="button">📝 {{ __('Edit Movie')
+            }}</a>
+        <form id="form" method="POST" action="{{ route('movies.destroy', $movie) }}" style="display: inline-block;">
+            @csrf
+            @method("DELETE")
+            <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#confirmModal">🗑️ {{ __('Delete Movie') }}</button>
+        </form>
 
         <!-- Modal -->
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

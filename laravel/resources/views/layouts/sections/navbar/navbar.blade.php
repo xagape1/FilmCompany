@@ -54,6 +54,9 @@ $containerNav = $containerNav ?? 'container-fluid';
         </form>
       </div>
 
+
+
+
       <style>
         .searchInputContainer {
           display: flex;
@@ -88,6 +91,13 @@ $containerNav = $containerNav ?? 'container-fluid';
       <!--/ Style Switcher -->
 
       <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+
+        @role('admin')
+        <a href="{{ route('movies.create') }}" class="btn btn-primary">
+          <span style="margin-right: 5px;">🎬</span> Add Movie
+        </a>
+        @endrole
 
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">

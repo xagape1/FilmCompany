@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Models\Movie;
 use App\Models\File;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +23,7 @@ class MovieController extends Controller
         $moviesQuery = Movie::query();
         if ($busqueda) {
             $moviesQuery->where('title', 'LIKE', '%' . $busqueda . '%')
-            ->paginate(2);
+                ->paginate(2);
         }
 
         $movies = $moviesQuery->get();
@@ -115,13 +116,17 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
+        $id = auth()->id(); // Obtener el ID del usuario autenticado
+        $reviews = $movie->reviews; // Obtener las reseñas asociadas a la película
+
         return view('movies.show', [
             'movie' => $movie,
-            "files" => File::all(),
-            'reviews' => $movie->reviews,
-            
+            'files' => File::all(),
+            'reviews' => $reviews,
+            'id' => $id,
         ]);
     }
+
 
 
     /**

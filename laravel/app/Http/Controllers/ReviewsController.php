@@ -71,12 +71,12 @@ class ReviewsController extends Controller
             ]);
             Log::debug("DB storage OK");
             // Patrón PRG con mensaje de éxito
-            return redirect()->route('movies.reviews.show', [$movie, $review])
-                ->with('success', __('Coment successfully saved'));
+            return redirect()->route('movies.show', $movie)
+                ->with('success', __('Movie successfully saved'));
         } else {
             // Patrón PRG con mensaje de error
-            return redirect()->route("movies.reviews.create", $movie)
-                ->with('error', __('ERROR Uploading file'));
+            return redirect()->route('movies.show', $movie)
+                ->with('success', __('Movie successfully saved'));
         }
     }
 
@@ -130,16 +130,17 @@ class ReviewsController extends Controller
      */
     public function destroy(Movie $movie, Review $review)
     {
-        if ($review->author_id == auth()->id()) {
-            // Eliminar place de BD
+        if ($review->author_id == auth()->id() || auth()->user()->hasRole('admin')) {
+            // Eliminar reseña de BD
             $review->delete();
-            // Patró PRG amb missatge d'èxit
-            return redirect()->route("movies.reviews.index", $movie)
-                ->with('success', 'Resena successfully deleted');
+            // Patrón PRG con mensaje de éxito
+            return redirect()->route('movies.show', $movie)
+                ->with('success', __('Review successfully deleted'));
         } else {
-            return redirect()->route("movies.reviews.show", [$movie, $review])
-                ->with('error', __('No ets el propietari de la reseña'));
+            // Patrón PRG con mensaje de error
+            return redirect()->route('movies.show', $movie)
+                ->with('error', __('You do not have permission to delete this review'));
         }
-
     }
+
 }

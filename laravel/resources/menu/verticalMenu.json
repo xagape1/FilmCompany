@@ -11,6 +11,15 @@
       "icon": "menu-icon tf-icons bx bx-file",
       "name": "Page 2",
       "slug": "pages-page-2"
+    },
+    {
+      "url": "/movies/create",
+      "icon": "menu-icon tf-icons bx bx-book",
+      "name": "New Page",
+      "slug": "pages-new-page",
+      "roles": [
+        "admin"
+      ]
     }
   ]
 }
