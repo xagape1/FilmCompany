@@ -14,12 +14,9 @@
     },
     {
       "url": "/favorites",
-      "icon": "menu-icon tf-icons bx bx-book",
+      "icon": "menu-icon tf-icons bx bx-star",
       "name": "Favorites",
-      "slug": "pages-new-page",
-      "roles": [
-        "admin"
-      ]
+      "slug": "pages-new-page"
     }
   ]
 }

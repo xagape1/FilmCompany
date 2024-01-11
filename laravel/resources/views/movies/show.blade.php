@@ -50,7 +50,7 @@ $configData = Helper::appClasses();
     <div class="row justify-content-center">
         <div class="col-md-8 ">
             <div class="card ">
-                <h1 class="text-center h2 fw-bold">Write your Review!!</h1>
+                <h1 class="text-center h2 fw-bold">Write your Review</h1>
                 <form method="post" class="separar" action="{{ route('movies.reviews.store', ['movie' => $movie]) }}"
                     enctype="multipart/form-data">
                     @csrf
@@ -68,46 +68,46 @@ $configData = Helper::appClasses();
         <div class="col-md-8">
             <div class="card">
                 <h1 class="linea-inferior text-center fw-bold">Reviews</h1>
-                @if(count($reviews) <= 0) <p>There are no reviews, write your opinion about the movie!!</p>
-
-                    @foreach ($reviews as $review)
-                    <div class="row linea-inferior">
-                        <div class="card border col-md-8">
-                            <div class="d-flex flex-column justify-content-between align-items-start">
+                @if(count($reviews) > 0)
+                @foreach ($reviews as $review)
+                <div class="row linea-inferior">
+                    <div class="card border col-md-8">
+                        <div class="d-flex flex-column justify-content-between align-items-start">
+                            <div>
+                                <p><strong>{{ $review->user->name }}</strong></p>
+                                <p style="overflow-y: auto; max-height: 200px;">{{ $review->description }}</p>
+                            </div>
+                            @if(auth()->user()->hasRole('admin') || $review->author_id == $id)
+                            <form id="form" method="POST"
+                                action="{{ route('movies.reviews.destroy', [$movie, $review]) }}"
+                                style="display: inline-block;">
+                                @csrf
+                                @method("DELETE")
+                                <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#confirmModal">🗑️ {{ __('Delete Review') }}</button>
+                            </form>
+                            @endif
+                            <div>
                                 <div>
-                                    <p><strong>{{ $review->user->name }}</strong></p>
-                                    <p style="overflow-y: auto; max-height: 200px;">{{ $review->description }}</p>
+                                    <td><strong>{{ __('Created') }}</strong></td>
+                                    <td>{{ $review->created_at }}</td>
                                 </div>
-                                @if(auth()->user()->hasRole('admin') || $review->author_id == $id)
-                                <form id="form" method="POST"
-                                    action="{{ route('movies.reviews.destroy', [$movie, $review]) }}"
-                                    style="display: inline-block;">
-                                    @csrf
-                                    @method("DELETE")
-                                    <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#confirmModal">🗑️ {{ __('Delete Review') }}</button>
-                                </form>
                                 <div>
-                                    <div>
-                                        <td><strong>{{ __('Created') }}</strong></td>
-                                        <td>{{ $review->created_at }}</td>
-                                    </div>
-                                    <div>
-                                        <td><strong>{{ __('Updated') }}</strong></td>
-                                        <td>{{ $review->updated_at }}</td>
-                                    </div>
-
+                                    <td><strong>{{ __('Updated') }}</strong></td>
+                                    <td>{{ $review->updated_at }}</td>
                                 </div>
-                                @endif
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                    @endif
-
+                </div>
+                @endforeach
+                @else
+                <p>There are no reviews, write your opinion about the movie!!</p>
+                @endif
             </div>
         </div>
     </div>
+
 
     @role('admin')
     <div class="showtexto">
