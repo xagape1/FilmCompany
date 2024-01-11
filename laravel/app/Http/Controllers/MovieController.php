@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\Review;
 use App\Models\Movie;
 use App\Models\File;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MovieController extends Controller
 {
@@ -242,4 +245,25 @@ class MovieController extends Controller
         $files = File::all();
         return view('pages-home', compact('movies', 'files'));
     }
+
+    public function favorite(Movie $movie)
+    {
+        $favorite = Favorite::create([
+            'user_id' => auth()->user()->id,
+            'movie_id' => $movie->id,
+        ]);
+        return redirect()->back();
+
+    }
+    public function unfavorite(Movie $movie)
+    {
+        DB::table('favorites')
+            ->where(['user_id' => Auth::id(), 'movie_id' => $movie->id])
+            ->delete();
+
+        return redirect()->back();
+    }
+
+
 }
+

@@ -13,9 +13,9 @@
       "slug": "pages-page-2"
     },
     {
-      "url": "/movies/create",
+      "url": "/favorites",
       "icon": "menu-icon tf-icons bx bx-book",
-      "name": "New Page",
+      "name": "Favorites",
       "slug": "pages-new-page",
       "roles": [
         "admin"

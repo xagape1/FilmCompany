@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FavoriteController;
 
 $controller_path = 'App\Http\Controllers';
 
@@ -43,3 +44,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 });
 
 Route::resource('movies.reviews', ReviewsController::class)->middleware(['auth']);
+
+
+Route::post('/movies/{movie}/favorites', [App\Http\Controllers\MovieController::class, 'favorite'])->name('movies.favorite');
+Route::delete('/movies/{movie}/favorites', [App\Http\Controllers\MovieController::class, 'unfavorite'])->name('movies.unfavorite');
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+});
