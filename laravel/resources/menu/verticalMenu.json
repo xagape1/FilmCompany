@@ -7,10 +7,16 @@
       "slug": "pages-home"
     },
     {
-      "url": "/page-2",
-      "icon": "menu-icon tf-icons bx bx-file",
-      "name": "Page 2",
-      "slug": "pages-page-2"
+      "url": "/movies",
+      "icon": "menu-icon tf-icons bx bx-film",
+      "name": "Movies",
+      "slug": "movies-page"
+    },
+    {
+      "url": "/series",
+      "icon": "menu-icon tf-icons bx bx-tv",
+      "name": "Series",
+      "slug": "series-page"
     },
     {
       "url": "/favorites",

@@ -2,23 +2,20 @@
     <link rel="stylesheet" href="{{ asset(mix('assets/css/demo.css')) }}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 </head>
-
-@php
-$configData = Helper::appClasses();
-@endphp
+@php $configData = Helper::appClasses(); @endphp
 
 @extends('layouts.layoutMaster')
 
 @section('title', 'Favoritos')
 
-@section('content')
-@role('admin|pay')
-<div class="container card">
-    <div>
-        <h1>FAVORITES</h1>
+@section('content') @role('admin|pay')
+
+<div class="card">
+    <div class="header">
+        <h1 class="title">FAVORITES</h1>
     </div>
     @if(count($favoriteMovies) <= 0)
-        <p>No se encontraron películas favoritas.</p>
+        <p class="no-favorites">No favorite movies found.</p>
     @else
         <ul class="movie-list">
             @foreach ($favoriteMovies as $favoriteMovie)
@@ -28,7 +25,8 @@ $configData = Helper::appClasses();
                             <div class="header">{{ $favoriteMovie->title }}</div>
                             @foreach ($data['files'] as $file)
                                 @if($file->id == $favoriteMovie->cover_id)
-                                    <img alt="Portada Película" src='{{ asset("storage/{$file->filepath}") }}' />
+                                    <img class="cover-image" alt="Portada Película"
+                                        src='{{ asset("storage/{$file->filepath}") }}' />
                                 @endif
                             @endforeach
                         </div>
@@ -38,9 +36,29 @@ $configData = Helper::appClasses();
         </ul>
     @endif
 </div>
+
 @endrole
 
 <style>
+    body {
+        font-family: 'Nunito', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .no-favorites {
+        text-align: center;
+    }
+
     .movie-list {
         list-style: none;
         padding: 0;
@@ -49,25 +67,26 @@ $configData = Helper::appClasses();
         justify-content: space-around;
     }
 
-    .movie-item {
-        margin: 10px;
+    .movie {
+        border: 2px solid transparent;
+        border-radius: 8px;
+        text-align: center;
+        transition: box-shadow 0.3s;
     }
 
-    .movie {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: center;
+    .movie:hover {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
 
     .header {
-        font-size: 18px;
+        font-size: 28px;
         font-weight: bold;
-        margin-bottom: 5px;
     }
 
-    img {
+    .cover-image {
         max-width: 100%;
         height: auto;
+        border-radius: 8px;
     }
 </style>
 

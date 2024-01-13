@@ -19,26 +19,34 @@ $configData = Helper::appClasses();
         @foreach ($movies as $movie)
         <a href="{{ route('movies.show', $movie) }}">
             <div class="movie">
-                <div class="header">{{ $movie->title }}</div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="header">{{ $movie->title }}</div>
+                    <div class="">
+                        @php
+                        $isFavorite = Auth::user()->favorited->contains('id', $movie->id);
+                        @endphp
+                        <form method="post" style="display: inline-block;"
+                            action="{{ $isFavorite ? route('movies.unfavorite', $movie) : route('movies.favorite', $movie) }}"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @if($isFavorite)
+                            @method('DELETE')
+                            @endif
+                            <button id="quitar" type="submit"
+                                style="border: none; background: none; padding: 0; font-size: inherit;  margin-right: 10px; margin: 5px;">
+                                <i class="{{ $isFavorite ? 'fa-solid' : 'fa-regular ' }} fa-star"></i>
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+
                 @foreach ($files as $file)
                 @if($file->id == $movie->cover_id)
                 <img alt="Portada Pelicula" src='{{ asset("storage/{$file->filepath}") }}' />
                 @endif
                 @endforeach
-                @php
-                $isFavorite = Auth::user()->favorited->contains('id', $movie->id);
-                @endphp
-                <form method="post" style="display: inline-block;"
-                    action="{{ $isFavorite ? route('movies.unfavorite', $movie) : route('movies.favorite', $movie) }}"
-                    enctype="multipart/form-data">
-                    @csrf
-                    @if($isFavorite)
-                    @method('DELETE')
-                    @endif
-                    <button id="quitar" type="submit">
-                        <i class="{{ $isFavorite ? 'fa-regular' : 'fa-solid' }} fa-star"></i>
-                    </button>
-                </form>
             </div>
         </a>
         @endforeach
