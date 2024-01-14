@@ -16,8 +16,17 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('movie_id');
-            $table->foreign('movie_id')->references('id')->on('movies') // Corrected table name
+
+            $table->unsignedBigInteger('movie_id')->nullable();
+            $table->foreign('movie_id')->references('id')->on('movies')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->unsignedBigInteger('serie_id')->nullable();
+            $table->foreign('serie_id')->references('id')->on('series')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->unsignedBigInteger('episode_id')->nullable();
+            $table->foreign('episode_id')->references('id')->on('episodes')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
 

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Movie;
+use App\Models\Serie;
+use App\Models\Episode;
+
 
 class Favorite extends Model
 {
@@ -13,6 +16,8 @@ class Favorite extends Model
     public $timestamps = false;
     protected $fillable = [
         'movie_id',
+        'serie_id',
+        'episode_id',
         'user_id',
     ];
 
@@ -26,5 +31,12 @@ class Favorite extends Model
     {
         return $this->belongsTo(Movie::class);
     }
-
+    public function serie()
+    {
+        return $this->belongsTo(Serie::class);
+    }
+    public function episode()
+    {
+        return $this->belongsTo(Episode::class);
+    }
 }

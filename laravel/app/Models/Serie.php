@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Movie extends Model
+class Serie extends Model
 {
     use HasFactory;
 
@@ -15,17 +15,14 @@ class Movie extends Model
         'description',
         'genre_id',
         'cover_id',
-        'intro_id',
     ];
-
+    public function season()
+    {
+        return $this->hasMany(Season::class);
+    }
     public function file()
     {
         return $this->belongsTo(File::class);
-    }
-
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
     }
 
     public function genres()
@@ -37,14 +34,14 @@ class Movie extends Model
     {
         return $this->belongsToMany(User::class, 'favorites');
     }
+
     public function comprovarfavorite()
     {
-        $movie_id = $this->id;
+        $serie_id = $this->id;
         $user_id = auth()->user()->id;
-        $select = "SELECT id FROM favorites WHERE $movie_id = $movie_id and user_id = $user_id";
+        $select = "SELECT id FROM favorites WHERE $serie_id = $serie_id and user_id = $user_id";
         $id_favorite = DB::select($select);
         return empty($id_favorite);
     }
-
 
 }

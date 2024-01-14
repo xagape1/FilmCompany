@@ -45,7 +45,7 @@ $containerNav = $containerNav ?? 'container-fluid';
       </div>
 
       <div class="search-toggle">
-        <form class="searchForm" action="{{ route('movies.index') }}" method="GET">
+        <form class="searchForm" action="{{ route('series.index') }} " method="GET">
           <div class="input-group">
             <div class="searchInputContainer">
               <input type="text" name="busqueda" class="botonbuscar" value="{{ request('busqueda') }}" placeholder="🔍">
@@ -53,9 +53,6 @@ $containerNav = $containerNav ?? 'container-fluid';
           </div>
         </form>
       </div>
-
-
-
 
       <style>
         .searchInputContainer {
@@ -96,6 +93,9 @@ $containerNav = $containerNav ?? 'container-fluid';
         @role('admin')
         <a href="{{ route('movies.create') }}" class="btn btn-primary">
           <span style="margin-right: 5px;">🎬</span> Add Movie
+        </a>
+        <a href="{{ route('series.create') }}" class="btn btn-primary">
+          <span style="margin-right: 5px;">📽️</span> Add Serie
         </a>
         @endrole
 

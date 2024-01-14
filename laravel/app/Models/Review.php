@@ -14,6 +14,7 @@ class Review extends Model
         'description',
         'author_id',
         'movie_id',
+        'episode_id',
     ];
 
     public function user()
@@ -24,6 +25,11 @@ class Review extends Model
     public function movie()
     {
         return $this->belongsTo(Movie::class);
+    }
+
+    public function episode()
+    {
+        return $this->belongsTo(Episode::class);
     }
 
     public function author()

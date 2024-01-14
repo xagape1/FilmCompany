@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Favorite;
 use App\Models\Genre;
 use App\Models\Review;
-use App\Models\Movie;
+use App\Models\Serie;
 use App\Models\File;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class MovieController extends Controller
+class SerieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,26 +24,25 @@ class MovieController extends Controller
     {
         $busqueda = $request->busqueda;
 
-        $moviesQuery = Movie::query();
+        $serieQuery = Serie::query();
         if ($busqueda) {
-            $moviesQuery->where('title', 'LIKE', '%' . $busqueda . '%')
+            $serieQuery->where('title', 'LIKE', '%' . $busqueda . '%')
                 ->paginate(2);
         }
 
-        $movies = $moviesQuery->get();
+        $series = $serieQuery->get();
 
         $files = File::all();
         $genres = Genre::all();
 
         $data = [
-            'movies' => $movies,
+            'series' => $series,
             'files' => $files,
             'genres' => $genres,
         ];
 
-        return view('movies.index', $data);
+        return view('series.index', $data);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -53,7 +52,7 @@ class MovieController extends Controller
     public function create()
     {
         $genres = Genre::all(); // Asumiendo que tienes un modelo Genre para la tabla de géneros
-        return view("movies.create", compact('genres'));
+        return view("series.create", compact('genres'));
     }
 
     /**
@@ -70,42 +69,36 @@ class MovieController extends Controller
             'description' => 'required',
             'genre_id' => 'required|exists:genres,id',
             'cover' => 'required|mimes:gif,jpeg,jpg,png,mp4',
-            'intro' => 'required|mimes:gif,jpeg,jpg,png,mp4',
         ]);
 
         $title = $request->get('title');
         $description = $request->get('description');
         $genreId = $request->get('genre_id');
         $cover = $request->file('cover');
-        $intro = $request->file('intro');
 
         $filec = new File();
         $filecOk = $filec->diskSave($cover);
 
-        $filei = new File();
-        $fileiOk = $filei->diskSave($intro);
-
-        if ($filecOk && $fileiOk) {
+        if ($filecOk) {
             // Guardar los datos en la BD
             Log::debug("Saving post at DB...");
-            $movie = Movie::create([
+            $serie = Serie::create([
                 'title' => $title,
                 'description' => $description,
                 'genre_id' => $genreId,
                 'cover_id' => $filec->id,
-                'intro_id' => $filei->id,
             ]);
             Log::debug("DB storage OK");
             // Redirigir con mensaje de éxito
-            return redirect()->route('movies.show', $movie)
+            return redirect()->route('series.show', $serie)
                 ->with('success', __('Movie successfully saved'));
         } else {
+            Log::debug("ERROR");
             // Redirigir con mensaje de error
-            return redirect()->route("movies.create")
+            return redirect()->route("series.create")
                 ->with('error', __('ERROR Uploading file'));
         }
     }
-
 
     private function saveFileAndGetId($file)
     {
@@ -116,22 +109,21 @@ class MovieController extends Controller
         return null;
     }
 
+
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Movie  $movie
+     * @param \App\Models\Serie  $serie
      * @return \Illuminate\Http\Response
      */
-    public function show(Movie $movie)
+    public function show(Serie $serie)
     {
         $id = auth()->id();
 
-        $reviews = $movie->reviews;
-        return view('movies.show', [
-            'movie' => $movie,
+        return view('series.show', [
+            'serie' => $serie,
             'genre' => Genre::all(),
             'files' => File::all(),
-            'reviews' => $reviews,
             'id' => $id,
         ]);
     }
@@ -139,13 +131,13 @@ class MovieController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Movie  $movie
+     * @param  \App\Models\Serie  $serie
      * @return \Illuminate\Http\Response
      */
-    public function edit(Movie $movie)
+    public function edit(Serie $serie)
     {
-        return view("movies.edit", [
-            'movie' => $movie,
+        return view("series.edit", [
+            'serie' => $serie,
             "genres" => Genre::all(),
             "files" => File::all(),
         ]);
@@ -158,25 +150,23 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Movie $movie)
+    public function update(Request $request, Serie $serie)
     {
         $validatedData = $request->validate([
             'title' => 'required',
             'description' => 'required',
             'genre_id' => 'required|exists:genres,id',
             'cover' => 'sometimes|required|mimes:gif,jpeg,jpg,png,mp4',
-            'intro' => 'sometimes|required|mimes:gif,jpeg,jpg,png,mp4',
         ]);
 
         $title = $request->get('title');
         $description = $request->get('description');
         $genreId = $request->get('genre_id');
         $cover = $request->file('cover');
-        $intro = $request->file('intro');
 
         // Actualizar los datos de la película en la BD
         Log::debug("Updating post at DB...");
-        $movie->update([
+        $serie->update([
             'title' => $title,
             'description' => $description,
             'genre_id' => $genreId,  // Asegúrate de actualizar 'genre_id'
@@ -190,21 +180,12 @@ class MovieController extends Controller
 
             if ($filecOk) {
                 // Actualizar el ID del archivo de portada
-                $movie->update(['cover_id' => $filec->id]);
+                $serie->update(['cover_id' => $filec->id]);
             }
         }
-
-        if ($intro) {
-            $filei = new File();
-            $fileiOk = $filei->diskSave($intro);
-
-            if ($fileiOk) {
-                // Actualizar el ID del archivo de introducción
-                $movie->update(['intro_id' => $filei->id]);
-            }
-        }
+        
         // Redirigir con mensaje de éxito
-        return redirect()->route('movies.show', $movie)
+        return redirect()->route('series.show', $serie)
             ->with('success', __('Movie successfully updated'));
     }
 
@@ -214,13 +195,12 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Movie $movie)
+    public function destroy(Serie $serie)
     {
-        $movie->reviews()->delete();
-        if ($movie->file) {
-            $movie->file->diskDelete();
+        if ($serie->file) {
+            $serie->file->diskDelete();
         }
-        $movie->delete();
+        $serie->delete();
         return redirect()->route("pages-home")->with('success', __('Movie successfully deleted'));
     }
 
@@ -233,25 +213,24 @@ class MovieController extends Controller
     {
         return $this->update($request, $id);
     }
-
-    public function favorite(Movie $movie)
+    public function favorite(Serie $serie)
     {
         $favorite = Favorite::create([
             'user_id' => auth()->user()->id,
-            'movie_id' => $movie->id,
+            'serie_id' => $serie->id,
         ]);
         return redirect()->back();
 
     }
-    public function unfavorite(Movie $movie)
+    public function unfavorite(Serie $serie)
     {
         DB::table('favorites')
-            ->where(['user_id' => Auth::id(), 'movie_id' => $movie->id])
+            ->where(['user_id' => Auth::id(), 'serie_id' => $serie->id])
             ->delete();
 
         return redirect()->back();
     }
 
 
-}
 
+}

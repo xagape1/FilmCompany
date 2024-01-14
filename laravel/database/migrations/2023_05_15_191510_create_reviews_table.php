@@ -20,6 +20,10 @@ return new class extends Migration {
             $table->foreign('author_id')->references('id')->on('users');
             $table->unsignedBigInteger('movie_id');
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            
+            $table->unsignedBigInteger('episode_id');
+            $table->foreign('episode_id')->references('id')->on('episodes')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

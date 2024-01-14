@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Serie;
 use App\Models\Movie;
 use App\Models\File;
 use App\Models\Favorite;
@@ -12,10 +13,13 @@ class FavoriteController extends Controller
     public function index()
     {
         $movies = Movie::all();
+        $series = Serie::all();
+
         $files = File::all();
 
         $data = [
             'movies' => $movies,
+            'series' => $series,
             'files' => $files,
         ];
 

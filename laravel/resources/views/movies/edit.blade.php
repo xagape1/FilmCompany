@@ -36,7 +36,6 @@ $configData = Helper::appClasses();
     </div>
 
     <div class="col-md-8">
-
         <div class="card">
             <form method="POST" action="{{ route('movies.update', $movie) }}" enctype="multipart/form-data">
                 @csrf
