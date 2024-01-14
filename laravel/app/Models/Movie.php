@@ -14,7 +14,7 @@ class Movie extends Model
     protected $fillable = [
         'title',
         'description',
-        'gender',
+        'genre_id',
         'cover_id',
         'intro_id',
     ];
@@ -27,6 +27,11 @@ class Movie extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function genres()
+    {
+        return $this->hasMany(Genre::class);
     }
 
     public function favoritedBy()

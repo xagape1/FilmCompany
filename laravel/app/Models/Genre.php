@@ -14,4 +14,9 @@ class Genre extends Model
         $genres = Genre::all();
         return view('/movies', compact('genres'));
     }
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
+    }
 }

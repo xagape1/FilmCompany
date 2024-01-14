@@ -14,9 +14,11 @@ return new class extends Migration {
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->string('title',255);
-            $table->string('description',255);
-            $table->string('gender',255);
+            $table->string('title', 255);
+            $table->string('description', 255);
+            $table->unsignedBigInteger('genre_id');
+            $table->foreign('genre_id')->references('id')->on('genres');
+
             $table->unsignedBigInteger('cover_id');
             $table->foreign('cover_id')->references('id')->on('files');
 

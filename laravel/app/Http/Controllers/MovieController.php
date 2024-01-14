@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Favorite;
+use App\Models\Genre;
 use App\Models\Review;
 use App\Models\Movie;
 use App\Models\File;
@@ -32,10 +33,12 @@ class MovieController extends Controller
         $movies = $moviesQuery->get();
 
         $files = File::all();
+        $genres = Genre::all();
 
         $data = [
             'movies' => $movies,
             'files' => $files,
+            'genres' => $genres,
         ];
 
         return view('movies.index', $data);
@@ -49,8 +52,11 @@ class MovieController extends Controller
      */
     public function create()
     {
-        return view("movies.create");
+        $genres = Genre::all(); // Asumiendo que tienes un modelo Genre para la tabla de géneros
+        return view("movies.create", compact('genres'));
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -64,14 +70,14 @@ class MovieController extends Controller
         $validatedData = $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'gender' => 'required',
+            'genre_id' => 'required|exists:genres,id',
             'cover' => 'required|mimes:gif,jpeg,jpg,png,mp4',
             'intro' => 'required|mimes:gif,jpeg,jpg,png,mp4',
         ]);
 
         $title = $request->get('title');
         $description = $request->get('description');
-        $gender = $request->get('gender');
+        $genreId = $request->get('genre_id');
         $cover = $request->file('cover');
         $intro = $request->file('intro');
 
@@ -87,7 +93,7 @@ class MovieController extends Controller
             $movie = Movie::create([
                 'title' => $title,
                 'description' => $description,
-                'gender' => $gender,
+                'genre_id' => $genreId,
                 'cover_id' => $filec->id,
                 'intro_id' => $filei->id,
             ]);
@@ -101,6 +107,7 @@ class MovieController extends Controller
                 ->with('error', __('ERROR Uploading file'));
         }
     }
+
 
     private function saveFileAndGetId($file)
     {
@@ -119,18 +126,17 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        $id = auth()->id(); // Obtener el ID del usuario autenticado
-        $reviews = $movie->reviews; // Obtener las reseñas asociadas a la película
+        $id = auth()->id();
 
+        $reviews = $movie->reviews;
         return view('movies.show', [
             'movie' => $movie,
+            'genre' => Genre::all(),
             'files' => File::all(),
             'reviews' => $reviews,
             'id' => $id,
         ]);
     }
-
-
 
     /**
      * Show the form for editing the specified resource.
@@ -142,6 +148,7 @@ class MovieController extends Controller
     {
         return view("movies.edit", [
             'movie' => $movie,
+            "genres" => Genre::all(),
             "files" => File::all(),
         ]);
     }
@@ -159,14 +166,14 @@ class MovieController extends Controller
         $validatedData = $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'gender' => 'required',
+            'genre_id' => 'required|exists:genres,id',
             'cover' => 'sometimes|required|mimes:gif,jpeg,jpg,png,mp4',
             'intro' => 'sometimes|required|mimes:gif,jpeg,jpg,png,mp4',
         ]);
 
         $title = $request->get('title');
         $description = $request->get('description');
-        $gender = $request->get('gender');
+        $genreId = $request->get('genre_id');
         $cover = $request->file('cover');
         $intro = $request->file('intro');
 
@@ -175,7 +182,7 @@ class MovieController extends Controller
         $movie->update([
             'title' => $title,
             'description' => $description,
-            'gender' => $gender,
+            'genre_id' => $genreId,  // Asegúrate de actualizar 'genre_id'
         ]);
         Log::debug("DB update OK");
 
@@ -204,8 +211,6 @@ class MovieController extends Controller
             ->with('success', __('Movie successfully updated'));
     }
 
-
-
     /**
      * Remove the specified resource from storage.
      *
@@ -214,20 +219,13 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        // Verificar si la relación 'file' está presente antes de eliminar
+        $movie->reviews()->delete();
         if ($movie->file) {
-            // Eliminar fitxer associat del disc i BD
             $movie->file->diskDelete();
         }
-
-        // Eliminar post de BD
         $movie->delete();
-
-        // Patró PRG amb missatge d'èxit
-        return redirect()->route("pages-home")
-            ->with('success', __('Movie successfully deleted'));
+        return redirect()->route("pages-home")->with('success', __('Movie successfully deleted'));
     }
-
 
     public function update_workaround(Request $request, $id)
     {
@@ -237,13 +235,6 @@ class MovieController extends Controller
     public function update_post(Request $request, $id)
     {
         return $this->update($request, $id);
-    }
-
-    public function showHomePage()
-    {
-        $movies = Movie::all();
-        $files = File::all();
-        return view('pages-home', compact('movies', 'files'));
     }
 
     public function favorite(Movie $movie)

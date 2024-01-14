@@ -20,16 +20,20 @@ $configData = Helper::appClasses();
             <div class="card">
                 <div class="border posts">
                     <form method="post" action="{{ route('movies.store') }}" enctype="multipart/form-data"> @csrf
-                        <div class="form-group"> <label for="title">{{ __('TITLE') }}</label> <textarea
-                                id="title" name="title" class="form-control"></textarea>
+                        <div class="form-group"> <label for="title">{{ __('TITLE') }}</label> <textarea id="title"
+                                name="title" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="description">{{ __('SYNOSPYS') }}</label>
                             <textarea id="description" name="description" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="gender">{{ __('GENDER') }}</label>
-                            <textarea id="gender" name="gender" class="form-control"></textarea>
+                            <label for="genre_id">{{ __('GENRE') }}</label>
+                            <select id="genre_id" name="genre_id" class="form-control">
+                                @foreach ($genres as $genre)
+                                <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="cover">{{ __('COVER') }}</label>

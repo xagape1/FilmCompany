@@ -35,7 +35,6 @@ $configData = Helper::appClasses();
         @endforeach
     </div>
 
-
     <div class="col-md-8">
 
         <div class="card">
@@ -52,8 +51,13 @@ $configData = Helper::appClasses();
                         class="form-control">{{ $movie->description }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="gender">GENDER</label>
-                    <textarea id="gender" name="gender" class="form-control">{{ $movie->gender }}</textarea>
+                    <label for="genre_id">{{ __('GENRE') }}</label>
+                    <select id="genre_id" name="genre_id" class="form-control">
+                        @foreach ($genres as $genre)
+                        <option value="{{ $genre->id }}" @if($genre->id == $movie->genre_id) selected @endif>{{
+                            $genre->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="cover">COVER</label>
@@ -63,9 +67,7 @@ $configData = Helper::appClasses();
                     <label for="intro">MOVIE</label>
                     <input type="file" id="intro" name="intro" class="form-control" />
                 </div>
-
                 <button type="submit" class="btn btn-primary">Update</button>
-
                 <button type="reset" class="btn btn-secondary">Reset</button>
             </form>
         </div>
