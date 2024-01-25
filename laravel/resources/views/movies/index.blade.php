@@ -23,22 +23,17 @@ $configData = Helper::appClasses();
                     <div class="header">{{ $movie->title }}</div>
                     <div class="">
                         @php
-                        $isFavorite = Auth::user()->favorited->contains('id', $movie->id);
+                        $isFavorite = Auth::user()->favoritedM->contains('id', $movie->id);
                         @endphp
-                        <form method="post" style="display: inline-block;"
-                            action="{{ $isFavorite ? route('movies.unfavorite', $movie) : route('movies.favorite', $movie) }}"
-                            enctype="multipart/form-data">
+                        <form method="post" style="display: inline-block;" action="{{ $isFavorite ? route('movies.unfavorite', $movie) : route('movies.favorite', $movie) }}" enctype="multipart/form-data">
                             @csrf
                             @if($isFavorite)
                             @method('DELETE')
                             @endif
-                            <button id="quitar" type="submit"
-                                style="border: none; background: none; padding: 0; font-size: inherit;  margin-right: 10px; margin: 5px;">
+                            <button id="quitar" type="submit" style="border: none; background: none; padding: 0; font-size: inherit;  margin-right: 10px; margin: 5px;">
                                 <i class="{{ $isFavorite ? 'fa-solid' : 'fa-regular ' }} fa-star"></i>
                             </button>
-
                         </form>
-
                     </div>
                 </div>
 

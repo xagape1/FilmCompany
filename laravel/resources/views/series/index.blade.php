@@ -23,7 +23,7 @@ $configData = Helper::appClasses();
                     <div class="header">{{ $serie->title }}</div>
                     <div class="">
                         @php
-                        $isFavorite = Auth::user()->favorited->contains('id', $serie->id);
+                        $isFavorite = Auth::user()->favoritedS->contains('id', $serie->id);
                         @endphp
                         <form method="post" style="display: inline-block;"
                             action="{{ $isFavorite ? route('series.unfavorite', $serie) : route('series.favorite', $serie) }}"

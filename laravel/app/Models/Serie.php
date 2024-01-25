@@ -16,10 +16,11 @@ class Serie extends Model
         'genre_id',
         'cover_id',
     ];
-    public function season()
+    public function seasons()
     {
         return $this->hasMany(Season::class);
     }
+
     public function file()
     {
         return $this->belongsTo(File::class);
@@ -43,5 +44,4 @@ class Serie extends Model
         $id_favorite = DB::select($select);
         return empty($id_favorite);
     }
-
 }

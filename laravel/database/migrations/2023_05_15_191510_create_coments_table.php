@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('seasons', function (Blueprint $table) {
+        Schema::create('coments', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 255);
-            $table->unsignedBigInteger('serie_id');
-            $table->foreign('serie_id')->references('id')->on('series')
-                ->onUpdate('cascade')->onDelete('cascade');
+            $table->string('description', 255);
+
+            $table->unsignedBigInteger('author_id');
+            $table->foreign('author_id')->references('id')->on('users');
+
+            $table->unsignedBigInteger('episode_id')->nullable();
+            $table->foreign('episode_id')->references('id')->on('episodes')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('seasons');
+        Schema::dropIfExists('reviews');
     }
 };

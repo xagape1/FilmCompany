@@ -13,14 +13,21 @@ class Season extends Model
         'serie_id',
     ];
 
+
+    public function create()
+    {
+        $seasons = Season::all();
+        return view('/series', compact('seasons'));
+    }
+
     public function serie()
     {
         return $this->belongsTo(Serie::class);
     }
 
+
     public function episode()
     {
         return $this->hasMany(Episode::class);
     }
-
 }

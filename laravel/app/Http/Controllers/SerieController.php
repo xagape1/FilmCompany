@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Favorite;
 use App\Models\Genre;
-use App\Models\Review;
 use App\Models\Serie;
 use App\Models\File;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -34,11 +34,13 @@ class SerieController extends Controller
 
         $files = File::all();
         $genres = Genre::all();
+        $seasons = Season::all();
 
         $data = [
             'series' => $series,
             'files' => $files,
             'genres' => $genres,
+            'seasons' => $seasons
         ];
 
         return view('series.index', $data);
@@ -51,9 +53,11 @@ class SerieController extends Controller
      */
     public function create()
     {
-        $genres = Genre::all(); // Asumiendo que tienes un modelo Genre para la tabla de géneros
+        $genres = Genre::all();
+        $seasons = Season::all();
         return view("series.create", compact('genres'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -80,7 +84,6 @@ class SerieController extends Controller
         $filecOk = $filec->diskSave($cover);
 
         if ($filecOk) {
-            // Guardar los datos en la BD
             Log::debug("Saving post at DB...");
             $serie = Serie::create([
                 'title' => $title,
@@ -89,12 +92,10 @@ class SerieController extends Controller
                 'cover_id' => $filec->id,
             ]);
             Log::debug("DB storage OK");
-            // Redirigir con mensaje de éxito
             return redirect()->route('series.show', $serie)
-                ->with('success', __('Movie successfully saved'));
+                ->with('success', __('Serie successfully saved'));
         } else {
             Log::debug("ERROR");
-            // Redirigir con mensaje de error
             return redirect()->route("series.create")
                 ->with('error', __('ERROR Uploading file'));
         }
@@ -109,25 +110,25 @@ class SerieController extends Controller
         return null;
     }
 
-
     /**
      * Display the specified resource.
      *
      * @param \App\Models\Serie  $serie
      * @return \Illuminate\Http\Response
      */
+
     public function show(Serie $serie)
     {
         $id = auth()->id();
 
         return view('series.show', [
             'serie' => $serie,
-            'genre' => Genre::all(),
+            'genres' => Genre::all(),
+            'seasons' => Season::all(),
             'files' => File::all(),
             'id' => $id,
         ]);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -164,29 +165,24 @@ class SerieController extends Controller
         $genreId = $request->get('genre_id');
         $cover = $request->file('cover');
 
-        // Actualizar los datos de la película en la BD
         Log::debug("Updating post at DB...");
         $serie->update([
             'title' => $title,
             'description' => $description,
-            'genre_id' => $genreId,  // Asegúrate de actualizar 'genre_id'
+            'genre_id' => $genreId,
         ]);
         Log::debug("DB update OK");
-
-        // Actualizar archivos solo si se proporcionan nuevos archivos
         if ($cover) {
             $filec = new File();
             $filecOk = $filec->diskSave($cover);
 
             if ($filecOk) {
-                // Actualizar el ID del archivo de portada
                 $serie->update(['cover_id' => $filec->id]);
             }
         }
-        
-        // Redirigir con mensaje de éxito
+
         return redirect()->route('series.show', $serie)
-            ->with('success', __('Movie successfully updated'));
+            ->with('success', __('Serie successfully updated'));
     }
 
     /**
@@ -201,7 +197,7 @@ class SerieController extends Controller
             $serie->file->diskDelete();
         }
         $serie->delete();
-        return redirect()->route("pages-home")->with('success', __('Movie successfully deleted'));
+        return redirect()->route("pages-home")->with('success', __('Serie successfully deleted'));
     }
 
     public function update_workaround(Request $request, $id)
@@ -220,7 +216,6 @@ class SerieController extends Controller
             'serie_id' => $serie->id,
         ]);
         return redirect()->back();
-
     }
     public function unfavorite(Serie $serie)
     {
@@ -230,7 +225,4 @@ class SerieController extends Controller
 
         return redirect()->back();
     }
-
-
-
 }

@@ -52,7 +52,7 @@ class MovieController extends Controller
      */
     public function create()
     {
-        $genres = Genre::all(); // Asumiendo que tienes un modelo Genre para la tabla de géneros
+        $genres = Genre::all();
         return view("movies.create", compact('genres'));
     }
 
@@ -86,7 +86,6 @@ class MovieController extends Controller
         $fileiOk = $filei->diskSave($intro);
 
         if ($filecOk && $fileiOk) {
-            // Guardar los datos en la BD
             Log::debug("Saving post at DB...");
             $movie = Movie::create([
                 'title' => $title,
@@ -96,11 +95,9 @@ class MovieController extends Controller
                 'intro_id' => $filei->id,
             ]);
             Log::debug("DB storage OK");
-            // Redirigir con mensaje de éxito
             return redirect()->route('movies.show', $movie)
                 ->with('success', __('Movie successfully saved'));
         } else {
-            // Redirigir con mensaje de error
             return redirect()->route("movies.create")
                 ->with('error', __('ERROR Uploading file'));
         }
@@ -129,7 +126,7 @@ class MovieController extends Controller
         $reviews = $movie->reviews;
         return view('movies.show', [
             'movie' => $movie,
-            'genre' => Genre::all(),
+            'genres' => Genre::all(),
             'files' => File::all(),
             'reviews' => $reviews,
             'id' => $id,
@@ -174,16 +171,13 @@ class MovieController extends Controller
         $cover = $request->file('cover');
         $intro = $request->file('intro');
 
-        // Actualizar los datos de la película en la BD
         Log::debug("Updating post at DB...");
         $movie->update([
             'title' => $title,
             'description' => $description,
-            'genre_id' => $genreId,  // Asegúrate de actualizar 'genre_id'
+            'genre_id' => $genreId,
         ]);
         Log::debug("DB update OK");
-
-        // Actualizar archivos solo si se proporcionan nuevos archivos
         if ($cover) {
             $filec = new File();
             $filecOk = $filec->diskSave($cover);
@@ -241,7 +235,6 @@ class MovieController extends Controller
             'movie_id' => $movie->id,
         ]);
         return redirect()->back();
-
     }
     public function unfavorite(Movie $movie)
     {
@@ -251,7 +244,4 @@ class MovieController extends Controller
 
         return redirect()->back();
     }
-
-
 }
-

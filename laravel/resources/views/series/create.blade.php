@@ -13,6 +13,8 @@ $configData = Helper::appClasses();
 {{ __('Add Serie') }}
 @endsection
 
+@role('admin')
+
 @section('content')
 <div class="containercreate">
     <div class="row justify-content-center">
@@ -20,8 +22,7 @@ $configData = Helper::appClasses();
             <div class="card">
                 <div class="border posts">
                     <form method="post" action="{{ route('series.store') }}" enctype="multipart/form-data"> @csrf
-                        <div class="form-group"> <label for="title">{{ __('TITLE') }}</label> <textarea id="title"
-                                name="title" class="form-control"></textarea>
+                        <div class="form-group"> <label for="title">{{ __('TITLE') }}</label> <textarea id="title" name="title" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="description">{{ __('SYNOSPYS') }}</label>
@@ -47,4 +48,6 @@ $configData = Helper::appClasses();
         </div>
     </div>
 </div>
+@endrole
+
 @endsection

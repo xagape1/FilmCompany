@@ -23,8 +23,15 @@ class FavoriteController extends Controller
             'files' => $files,
         ];
 
-        $favoriteMovies = Auth::user()->favorited()->get();
+        $favoriteMovies = Auth::user()->favoritedM()->get();
+        $favoriteSeries = Auth::user()->favoritedS()->get();
+        $favoriteEpisodes = Auth::user()->favoritedE()->get();
 
-        return view('favorites.index', ['data' => $data, 'favoriteMovies' => $favoriteMovies]);
+        return view('favorites.index', [
+            'data' => $data,
+            'favoriteMovies' => $favoriteMovies,
+            'favoriteSeries' => $favoriteSeries,
+            'favoriteEpisodes' => $favoriteEpisodes,
+        ]);
     }
 }
