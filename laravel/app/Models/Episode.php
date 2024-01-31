@@ -25,7 +25,10 @@ class Episode extends Model
     {
         return $this->hasMany(Coment::class);
     }
-    
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
     public function season()
     {
         return $this->belongsTo(Season::class);
@@ -35,7 +38,7 @@ class Episode extends Model
     {
         return $this->belongsToMany(User::class, 'favorites');
     }
-    
+
     public function comprovarfavorite()
     {
         $episode_id = $this->id;
@@ -44,5 +47,4 @@ class Episode extends Model
         $id_favorite = DB::select($select);
         return empty($id_favorite);
     }
-
 }

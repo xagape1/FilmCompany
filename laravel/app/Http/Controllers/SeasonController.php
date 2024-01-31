@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Season;
 use App\Models\Serie;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SeasonController extends Controller
 {
@@ -31,8 +35,8 @@ class SeasonController extends Controller
 
         $title = $request->get('title');
         $serie_id = $serie->id;
+
         if ($title) {
-            // Almacenar datos en BD
             $season = Season::create([
                 'title' => $title,
                 'serie_id' => $serie_id,

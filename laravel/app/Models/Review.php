@@ -27,10 +27,6 @@ class Review extends Model
         return $this->belongsTo(Movie::class);
     }
 
-    public function episode()
-    {
-        return $this->belongsTo(Episode::class);
-    }
 
     public function author()
     {

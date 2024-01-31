@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="header">
-        <h1 class="title">FAVORITES MOVIES</h1>
+        <h1 class="title">FAVORITES</h1>
     </div>
     @if(count($favoriteMovies) <= 0 && count($favoriteSeries) <=0 && count($favoriteEpisodes) <=0) <p
         class="no-favorites">No favorite items found.</p>
@@ -111,7 +111,7 @@
     }
 
     .title {
-        text-align: left;
+        text-align: center;
     }
 
     .no-favorites {

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Favorite;
 use App\Models\Genre;
-use App\Models\Review;
 use App\Models\Movie;
 use App\Models\File;
 use Illuminate\Support\Facades\Log;

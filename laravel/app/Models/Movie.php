@@ -45,6 +45,4 @@ class Movie extends Model
         $id_favorite = DB::select($select);
         return empty($id_favorite);
     }
-
-
 }
