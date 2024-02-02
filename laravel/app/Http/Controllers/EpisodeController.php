@@ -111,12 +111,12 @@ class EpisodeController extends Controller
     {
         $id = auth()->id();
 
-        $reviews = $episode->reviews;
+        $comments = $episode->comments;
         return view('episodes.show', [
             'episode' => $episode,
             'seasons' => Season::all(),
             'files' => File::all(),
-            'reviews' => $reviews,
+            'comments' => $comments,
             'id' => $id,
         ]);
     }
@@ -198,7 +198,7 @@ class EpisodeController extends Controller
      */
     public function destroy(Episode $episode)
     {
-        $episode->reviews()->delete();
+        $episode->comments()->delete();
         if ($episode->file) {
             $episode->file->diskDelete();
         }

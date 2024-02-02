@@ -14,7 +14,6 @@ class Review extends Model
         'description',
         'author_id',
         'movie_id',
-        'episode_id',
     ];
 
     public function user()

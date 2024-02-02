@@ -21,13 +21,9 @@ class Episode extends Model
     {
         return $this->belongsTo(File::class);
     }
-    public function coments()
+    public function comments()
     {
-        return $this->hasMany(Coment::class);
-    }
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Comment::class);
     }
     public function season()
     {

@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Review;
-use App\Models\Movie;
+use App\Models\Comment;
+use App\Models\Episode;
 use Illuminate\Support\Facades\Log;
 
-class ReviewsController extends Controller
+class CommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
      
      * @return \Illuminate\Http\Response
      */
-    public function index(Movie $movie)
+    public function index(Episode $episode)
     {
-        return view("reviews.index", [
-            "reviews" => Review::all(),
-            "movie" => $movie,
+        return view("comments.index", [
+            "comments" => Comment::all(),
+            "episode" => $episode,
         ]);
     }
 
@@ -27,10 +27,10 @@ class ReviewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Movie $movie)
+    public function create(Episode $episode)
     {
-        return view("reviews.create", [
-            "movie" => $movie,
+        return view("episodes.create", [
+            "episode" => $episode,
         ]);
     }
 
@@ -41,7 +41,7 @@ class ReviewsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function store(Request $request, Movie $movie)
+    public function store(Request $request, Episode $episode)
     {
         $validatedData = $request->validate([
             'description' => 'required',
@@ -49,28 +49,27 @@ class ReviewsController extends Controller
 
         // Obtener datos del formulario
         $description = $request->get('description');
-        $movie_id = $movie->id;
-        $author_id = auth()->user()->id;  // Obtener el ID del usuario actual
+        $episode_id = $episode->id;
+        $author_id = auth()->user()->id;
 
         if ($description) {
             // Almacenar datos en BD
             Log::debug("Saving post at DB...");
-            $review = Review::create([
+            $comment = Comment::create([
                 'description' => $description,
-                'movie_id' => $movie_id,
+                'episode_id' => $episode_id,
                 'author_id' => $author_id,
             ]);
             Log::debug("DB storage OK");
             // Patrón PRG con mensaje de éxito
-            return redirect()->route('movies.show', $movie)
-                ->with('success', __('Movie successfully saved'));
+            return redirect()->route('episodes.show', $episode)
+                ->with('success', __('Episode successfully saved'));
         } else {
             // Patrón PRG con mensaje de error
-            return redirect()->route('movies.show', $movie)
-                ->with('success', __('Movie successfully saved'));
+            return redirect()->route('episodes.show', $episode)
+                ->with('success', __('Episode successfully saved'));
         }
     }
-
 
     /**
      * Display the specified resource.
@@ -78,13 +77,13 @@ class ReviewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Movie $movie, Review $review)
+    public function show(Episode $episode, Comment $comment)
     {
         $id = auth()->id();
-        return view("reviews.show", [
-            'review' => $review,
-            "movie" => $movie,
-            'author' => $review->user,
+        return view("comments.show", [
+            'comment' => $comment,
+            "episode" => $episode,
+            'author' => $comment->user,
             "id" => $id,
         ]);
 
@@ -119,19 +118,18 @@ class ReviewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Movie $movie, Review $review)
+    public function destroy(Episode $episode, Comment $comment)
     {
-        if ($review->author_id == auth()->id() || auth()->user()->hasRole('admin')) {
+        if ($comment->author_id == auth()->id() || auth()->user()->hasRole('admin')) {
             // Eliminar reseña de BD
-            $review->delete();
+            $comment->delete();
             // Patrón PRG con mensaje de éxito
-            return redirect()->route('movies.show', $movie)
+            return redirect()->route('episode.show', $episode)
                 ->with('success', __('Review successfully deleted'));
         } else {
             // Patrón PRG con mensaje de error
-            return redirect()->route('movies.show', $movie)
+            return redirect()->route('episode.show', $episode)
                 ->with('error', __('You do not have permission to delete this review'));
         }
     }
-
 }

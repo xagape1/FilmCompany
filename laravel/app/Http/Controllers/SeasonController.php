@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Season;
 use App\Models\Serie;
+use App\Models\File;
+use App\Models\Episode;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -51,17 +53,18 @@ class SeasonController extends Controller
         }
     }
 
-
     public function show(Serie $serie, Season $season)
     {
         $id = auth()->id();
+        
         return view("seasons.show", [
             'season' => $season,
-            "serie" => $serie,
+            'serie'=> $serie,
+            'files' => File::all(),
             "id" => $id,
         ]);
     }
-
+    
     public function edit($id)
     {
         $season = Season::find($id);

@@ -20,7 +20,6 @@ class PermissionSeeder extends Seeder
         $adminRole = Role::create(['name' => 'admin']);
         $newRole = Role::create(['name' => 'new']);
         $payRole = Role::create(['name' => 'pay']);
-
         Permission::create(['name' => 'movies.*']);
         Permission::create(['name' => 'movies.list']);
         Permission::create(['name' => 'movies.create']);
@@ -28,9 +27,30 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'movies.read']);
         Permission::create(['name' => 'movies.delete']);
 
-        $adminRole->givePermissionTo(['movies.*']);
+        Permission::create(['name' => 'series.*']);
+        Permission::create(['name' => 'series.list']);
+        Permission::create(['name' => 'series.create']);
+        Permission::create(['name' => 'series.update']);
+        Permission::create(['name' => 'series.read']);
+        Permission::create(['name' => 'series.delete']);
+
+        Permission::create(['name' => 'seasons.*']);
+        Permission::create(['name' => 'seasons.list']);
+        Permission::create(['name' => 'seasons.create']);
+        Permission::create(['name' => 'seasons.update']);
+        Permission::create(['name' => 'seasons.read']);
+        Permission::create(['name' => 'seasons.delete']);
+
+        Permission::create(['name' => 'episodes.*']);
+        Permission::create(['name' => 'episodes.list']);
+        Permission::create(['name' => 'episodes.create']);
+        Permission::create(['name' => 'episodes.update']);
+        Permission::create(['name' => 'episodes.read']);
+        Permission::create(['name' => 'episodes.delete']);
+
+        $adminRole->givePermissionTo(['movies.*','series.*','seasons.*','episodes.*' ]);
         $newRole->givePermissionTo(['']);
-        $payRole->givePermissionTo(['movies.list','movies.read']);
+        $payRole->givePermissionTo(['movies.list','movies.read','seasons.list','seasons.read','episodes.list','episodes.read' ]);
 
         $user = User::find(1);
         $user2 = User::find(2);

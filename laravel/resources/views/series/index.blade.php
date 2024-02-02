@@ -16,10 +16,15 @@ $configData = Helper::appClasses();
 <div class="genre-container">
     @if(count($genres) <= 0) <p>No se encontraron géneros.</p>
         @else
+        @php
+        $hasSeries = false;
+        @endphp
+
         @foreach ($genres as $genre)
         @php
         $seriesInGenre = $series->where('genre_id', $genre->id);
         $hasContentInGenre = $seriesInGenre->isNotEmpty();
+        $hasSeries = $hasSeries || $hasContentInGenre;
         @endphp
 
         @if ($hasContentInGenre)
@@ -62,6 +67,10 @@ $configData = Helper::appClasses();
         </section>
         @endif
         @endforeach
+
+        @if (!$hasSeries)
+        <p class="movie-title">No series found, wait the maintenance.</p>
+        @endif
         @endif
 </div>
 @endrole
@@ -106,7 +115,7 @@ $configData = Helper::appClasses();
     }
 
     .movie-title {
-        font-size: 25px;
+        font-size: 20px;
         font-weight: bold;
     }
 

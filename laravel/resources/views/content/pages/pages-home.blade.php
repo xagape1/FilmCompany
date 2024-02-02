@@ -5,35 +5,39 @@
 @section('content')
 @role('admin|pay')
 <div class="genre-container">
-    @if(count($genres) <= 0) 
-        <p>No se encontraron géneros.</p>
-    @else
+    @if(count($genres) <= 0) <p>No se encontraron géneros.</p>
+        @else
+        @php
+        $hasContent = false;
+        @endphp
+
         @foreach ($genres as $genre)
-            @php
-                $moviesInGenre = $movies->where('genre_id', $genre->id);
-                $seriesInGenre = $series->where('genre_id', $genre->id);
-                $hasContentInGenre = $moviesInGenre->isNotEmpty() || $seriesInGenre->isNotEmpty();
-            @endphp
+        @php
+        $moviesInGenre = $movies->where('genre_id', $genre->id);
+        $seriesInGenre = $series->where('genre_id', $genre->id);
+        $hasMoviesInGenre = $moviesInGenre->isNotEmpty();
+        $hasSeriesInGenre = $seriesInGenre->isNotEmpty();
+        $hasContentInGenre = $hasMoviesInGenre || $hasSeriesInGenre;
+        $hasContent = $hasContent || $hasContentInGenre;
+        @endphp
 
-            @if ($hasContentInGenre)
-                <section class="genre-section">
-                    <h2>{{ $genre->name }}</h2>
+        @if ($hasContentInGenre)
+        <section class="genre-section">
+            <h2>{{ $genre->name }}</h2>
 
-                    <!-- Películas -->
-                    @if (count($moviesInGenre) > 0)
-                        <div class="movie-container">
-                            @foreach ($moviesInGenre as $movie)
-                                <a href="{{ route('movies.show', $movie) }}" class="movie-link">
-                                <div class="movie">
+            <!-- Películas -->
+            @if ($hasMoviesInGenre)
+            <div class="movie-container">
+                @foreach ($moviesInGenre as $movie)
+                <a href="{{ route('movies.show', $movie) }}" class="movie-link">
+                    <div class="movie">
                         <div class="movie-header">
                             <div class="movie-title">{{ $movie->title }}</div>
                             <div class="movie-actions">
                                 @php
                                 $isFavorite = Auth::user()->favoritedM->contains('id', $movie->id);
                                 @endphp
-                                <form method="post" class="favorite-form"
-                                    action="{{ $isFavorite ? route('movies.unfavorite', $movie) : route('movies.favorite', $movie) }}"
-                                    enctype="multipart/form-data">
+                                <form method="post" class="favorite-form" action="{{ $isFavorite ? route('movies.unfavorite', $movie) : route('movies.favorite', $movie) }}" enctype="multipart/form-data">
                                     @csrf
                                     @if($isFavorite)
                                     @method('DELETE')
@@ -46,31 +50,28 @@
                         </div>
                         @foreach ($files as $file)
                         @if($file->id == $movie->cover_id)
-                        <img alt="Portada Pelicula" src='{{ asset("storage/{$file->filepath}") }}'
-                            class="movie-cover" />
+                        <img alt="Portada Pelicula" src='{{ asset("storage/{$file->filepath}") }}' class="movie-cover" />
                         @endif
                         @endforeach
                     </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    @endif
+                </a>
+                @endforeach
+            </div>
+            @endif
 
-                    <!-- Series -->
-                    @if (count($seriesInGenre) > 0)
-                        <div class="series-container">
-                            @foreach ($seriesInGenre as $serie)
-                                <a href="{{ route('series.show', $serie) }}" class="movie-link">
-                                <div class="movie">
+            <!-- Series -->
+            @if ($hasSeriesInGenre)
+            <div class="series-container">
+                @foreach ($seriesInGenre as $serie)
+                <a href="{{ route('series.show', $serie) }}" class="movie-link">
+                    <div class="movie">
                         <div class="movie-header">
                             <div class="movie-title">{{ $serie->title }}</div>
                             <div class="movie-actions">
                                 @php
                                 $isFavorite = Auth::user()->favoritedS->contains('id', $serie->id);
                                 @endphp
-                                <form method="post" class="favorite-form"
-                                    action="{{ $isFavorite ? route('series.unfavorite', $serie) : route('series.favorite', $serie) }}"
-                                    enctype="multipart/form-data">
+                                <form method="post" class="favorite-form" action="{{ $isFavorite ? route('series.unfavorite', $serie) : route('series.favorite', $serie) }}" enctype="multipart/form-data">
                                     @csrf
                                     @if($isFavorite)
                                     @method('DELETE')
@@ -83,21 +84,25 @@
                         </div>
                         @foreach ($files as $file)
                         @if($file->id == $serie->cover_id)
-                        <img alt="Portada Pelicula" src='{{ asset("storage/{$file->filepath}") }}'
-                            class="movie-cover" />
+                        <img alt="Portada Pelicula" src='{{ asset("storage/{$file->filepath}") }}' class="movie-cover" />
                         @endif
                         @endforeach
                     </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    @endif
-                </section>
+                </a>
+                @endforeach
+            </div>
             @endif
+        </section>
+        @endif
         @endforeach
-    @endif
+
+        @if (!$hasContent)
+        <p class="movie-title">No movies or series found, wait the maintenance.</p>
+        @endif
+        @endif
 </div>
 @endrole
+
 
 @endsection
 
