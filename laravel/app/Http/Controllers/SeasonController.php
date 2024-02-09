@@ -56,16 +56,24 @@ class SeasonController extends Controller
     public function show()
     {
         $id = auth()->id();
+        $serie = Serie::with('seasons')->find(2);
         
-        $serie = Serie::with('seasons')->find($id);
+        // Verifica si se encontró la serie antes de continuar
+        if (!$serie) {
+            abort(404); // O maneja el caso en tu aplicación
+        }
     
+        $seasons = $serie->seasons;
+        
         return view("seasons.show", [
             'serie' => $serie,
-            'seasons' => $serie->seasons,
+            'seasons' => $seasons,
             'files' => File::all(),
             "id" => $id,
         ]);
     }
+    
+    
     
     
 

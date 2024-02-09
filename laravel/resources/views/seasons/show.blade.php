@@ -62,7 +62,7 @@
     <label for="season_id">{{ __('Select Season') }}</label>
     <div class="season-links">
         @foreach ($serie->seasons as $season)
-        <a href="{{ route('series.seasons.show', ['serie' => $serie, 'season' => $season]) }}">{{ $season->title }}</a>
+        <a href="{{ route('series.seasons.show', ['series' => $serie, 'season' => $season]) }}">{{ $season->title}}</a>
         @endforeach
 
 

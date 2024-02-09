@@ -87,6 +87,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
      */
 });
 
+
+
 Route::get('/series/{serie}/seasons', [SeasonController::class, 'index'])->name('seasons.index');
 Route::get('/admin/series/{serie}/seasons/create', [SeasonController::class, 'create'])->name('seasons.create');
 Route::post('/admin/series/{serie}/seasons', [SeasonController::class, 'store'])->name('series.seasons.store');
