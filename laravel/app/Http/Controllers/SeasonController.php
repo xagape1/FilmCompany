@@ -53,18 +53,22 @@ class SeasonController extends Controller
         }
     }
 
-    public function show(Serie $serie, Season $season)
+    public function show()
     {
         $id = auth()->id();
         
+        $serie = Serie::with('seasons')->find($id);
+    
         return view("seasons.show", [
-            'season' => $season,
-            'serie'=> $serie,
+            'serie' => $serie,
+            'seasons' => $serie->seasons,
             'files' => File::all(),
             "id" => $id,
         ]);
     }
     
+    
+
     public function edit($id)
     {
         $season = Season::find($id);
