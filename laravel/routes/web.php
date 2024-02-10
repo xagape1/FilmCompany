@@ -80,6 +80,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::put('/admin/series/{serie}', [SerieController::class, 'update'])->name('series.update');
     Route::delete('/admin/series/{serie}', [SerieController::class, 'destroy'])->name('series.destroy');
     Route::get('/series/{serie}/edit', [SerieController::class, 'edit'])->name('series.edit');
+
     /**
      * 
      * SEASONS
@@ -87,12 +88,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
      */
 });
 
-
-
 Route::get('/series/{serie}/seasons', [SeasonController::class, 'index'])->name('seasons.index');
 Route::get('/admin/series/{serie}/seasons/create', [SeasonController::class, 'create'])->name('seasons.create');
 Route::post('/admin/series/{serie}/seasons', [SeasonController::class, 'store'])->name('series.seasons.store');
-Route::get('/seasons/{season}', [SeasonController::class, 'show'])->name('seasons.show');
+Route::get('/series/{serie}/seasons/{season}', 'SeasonController@show')->name('series.seasons.show');
 Route::get('/admin/seasons/{season}/edit', [SeasonController::class, 'edit'])->name('seasons.edit');
 Route::put('/admin/seasons/{season}/update', [SeasonController::class, 'update'])->name('seasons.update');
 Route::delete('/admin/seasons/{season}/destroy', [SeasonController::class, 'destroy'])->name('seasons.destroy');

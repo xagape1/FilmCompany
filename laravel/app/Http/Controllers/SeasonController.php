@@ -53,19 +53,21 @@ class SeasonController extends Controller
         }
     }
 
-    public function show()
+    public function show(Serie $serie, Season $seasons)
     {
         $id = auth()->id();
-        $serie = Serie::with('seasons')->find(2);
-        
-        // Verifica si se encontró la serie antes de continuar
+
+        $serie = Serie::findOrFail($id);
+        $season = Season::findOrFail($id);
+
         if (!$serie) {
-            abort(404); // O maneja el caso en tu aplicación
+            abort(404);
         }
     
         $seasons = $serie->seasons;
-        
+    
         return view("seasons.show", [
+            'season' => $season,
             'serie' => $serie,
             'seasons' => $seasons,
             'files' => File::all(),
@@ -74,8 +76,7 @@ class SeasonController extends Controller
     }
     
     
-    
-    
+
 
     public function edit($id)
     {
@@ -101,6 +102,6 @@ class SeasonController extends Controller
         $season = Season::find($id);
         $season->delete();
 
-        return redirect()->route('seasons.index');
+        return redirect()->route('seasons.show', $season->id);
     }
 }

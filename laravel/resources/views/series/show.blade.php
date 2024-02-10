@@ -20,13 +20,8 @@
             </td>
         </tr>
     </table>
-
-    <table class="tableshowsynopsis">
-        <tr>
-            <td class="synopsis">{{ $serie->description }}</td>
-        </tr>
-    </table>
 </div>
+
 @role('admin')
 <div class="showtexto">
     <a class="btn btn-secondary" href="{{ route('series.edit', $serie) }}" role="button">📝 {{ __('Edit Serie')
@@ -59,24 +54,55 @@
 @endrole
 
 <div class="form-group">
-    <label for="season_id">{{ __('Select Season') }}</label>
-    <div class="season-links">
+    <label for="season_id" class="custom-label">{{ __('Select Season') }}</label>
+    <div class="season-links d-flex flex-wrap">
         @foreach ($serie->seasons as $season)
-        <a href="{{ route('series.seasons.show', ['series' => $serie, 'season' => $season]) }}">{{ $season->title}}</a>
+        <div class="season-item mx-2 my-2">
+            <a href="{{ route('series.seasons.show', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-light btn-season">{{ $season->title }}</a>
+
+            @role('admin')
+            <a href="{{ route('seasons.edit', ['season' => $season]) }}" class="btn btn-secondary btn-edit" role="button">📝 {{ __('Edit') }}</a>
+
+            <form id="form-{{ $season->id }}" method="POST" action="{{ route('seasons.destroy', ['season' => $season]) }}" style="display: inline-block;">
+                @csrf
+                @method('DELETE')
+                <button type="button" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $season->id }}">🗑️ {{ __('Delete') }}</button>
+            </form>
+
+            @endrole
+        </div>
         @endforeach
     </div>
 </div>
 
 
+
+<script>
+    function confirmDelete(formId) {
+        $('#confirmModal-' + formId).modal('hide');
+
+        $('#' + formId).submit();
+    }
+</script>
+
+
+
 @role('admin')
-<form method="post" class="separar" action="{{ route('series.seasons.store', ['serie' => $serie->id]) }}" enctype="multipart/form-data">
+<form method="post" class="separar" action="{{ route('series.seasons.store', ['serie' => $serie]) }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group"> <label for="title">{{ __('Add Season') }}</label> <textarea id="title" name="title" class="form-control"></textarea>
         <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
         <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
     </div>
 </form>
+
 @endrole
+<table class="tableshowsynopsis">
+    <tr>
+        <td class="synopsis">{{ $serie->description }}</td>
+    </tr>
+</table>
+
 @endsection
 
 <style>
@@ -87,13 +113,31 @@
         font-family: 'Nunito', sans-serif;
     }
 
+    .custom-label {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
     .content-container {
         @foreach ($files as $file) @if($file->id ==$serie->cover_id) background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url('{{ asset("storage/{$file->filepath}") }}');
-        @endif @endforeach background-size: cover;
+        @endif @endforeach background-size: 250% 200%;
         background-position: center;
         background-repeat: no-repeat;
-        padding: 10vh;
+        padding: 20vh;
         font-family: 'Nunito', sans-serif;
+    }
+
+    .tableshowtexto {
+        margin-top: -15vh;
+        margin-left: -15vh;
+    }
+
+    .tableshowtexto h1 {
+        font-size: 3rem;
+        margin-bottom: 0;
     }
 
     .synopsis {
