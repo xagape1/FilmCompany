@@ -88,7 +88,7 @@
 
 
 @role('admin')
-<form method="post" class="separar" action="{{ route('series.seasons.store', ['serie' => $serie]) }}" enctype="multipart/form-data">
+<form method="post" class="separar" action="{{ route('seasons.store', ['serie' => $serie]) }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group"> <label for="title">{{ __('Add Season') }}</label> <textarea id="title" name="title" class="form-control"></textarea>
         <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>

@@ -35,9 +35,14 @@ $configData = Helper::appClasses();
                             <input type="file" id="intro" name="intro" class="form-control" />
                         </div>
                         <div class="form-group">
-                            <label for="season_id">Season ID</label>
-                            <input type="text" id="season_id" name="season_id" class="form-control" value="{{ $episode->season_id }}">
+                            <label for="season_id">{{ __('SEASON') }}</label>
+                            <select id="season_id" name="season_id" class="form-control">
+                                @foreach ($seasons as $season)
+                                <option value="{{ $season->id }}">{{ $season->title }}</option>
+                                @endforeach
+                            </select>
                         </div>
+
                         <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
                         <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
                     </form>

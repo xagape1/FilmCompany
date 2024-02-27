@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Episode;
 use App\Models\Favorite;
-use App\Models\Genre;
 use Illuminate\Http\Request;
 use App\Models\File;
 use Illuminate\Support\Facades\Log;
@@ -48,33 +47,35 @@ class EpisodeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Serie $serie, Season $season)
     {
-        $series = Serie::all();
-        $seasons = Season::all();
-        return view("episodes.create", compact('series', 'seasons'));
+        $seasons = $serie->seasons;
+    
+        return view('episodes.create', compact('serie', 'season', 'seasons'));
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Season $season)
     {
         // Validar los archivos
         $validatedData = $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'season_id' => 'required|exists:genres,id',
+            'season_id' => 'required|exists:seasons,id',
             'cover' => 'required|mimes:gif,jpeg,jpg,png,mp4',
             'intro' => 'required|mimes:gif,jpeg,jpg,png,mp4',
         ]);
 
         $title = $request->get('title');
         $description = $request->get('description');
-        $seasonId = $request->get('season_id');
+        
+        $season_id = $request->get('season_id');
+
         $cover = $request->file('cover');
         $intro = $request->file('intro');
 
@@ -89,7 +90,7 @@ class EpisodeController extends Controller
             $episode = Episode::create([
                 'title' => $title,
                 'description' => $description,
-                'season_id' => $seasonId,
+                'season_id' => $season_id,
                 'cover_id' => $filec->id,
                 'intro_id' => $filei->id,
             ]);
@@ -168,7 +169,7 @@ class EpisodeController extends Controller
             'description' => $description,
             'season_id' => $seasonId,
         ]);
-        
+
         if ($cover) {
             $filec = new File();
             $filecOk = $filec->diskSave($cover);

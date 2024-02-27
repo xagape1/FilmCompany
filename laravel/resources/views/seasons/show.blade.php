@@ -90,7 +90,7 @@ User
 </script>
 @role('admin')
 
-<a href="{{ route('episodes.create', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-primary">Crear episodio</a>
+<a href="{{ route('episodes.create', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-primary">Crear episode</a>
 
 @endrole
 
