@@ -67,8 +67,10 @@ class SeasonController extends Controller
 
         $seasons = $serie->seasons;
 
+        $episodes = $season->episode;
+        
         return view("seasons.show", [
-            'episodes' => Episode::all(),
+            'episodes' => $episodes,
             'season' => $season,
             'serie' => $serie,
             'seasons' => $seasons,

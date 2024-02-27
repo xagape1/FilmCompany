@@ -59,33 +59,31 @@ User
 </div>
 @endrole
 
-<div class="form-group">
-    <label for="season_id" class="custom-label">{{ __('Select Season') }}</label>
-    <div class="season-links d-flex flex-wrap">
-        @foreach ($serie->seasons as $season)
-        <div>
-            <a href="{{ route('series.seasons.show', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-light btn-season">{{ $season->title }}</a>
+<label for="season_id" class="custom-label">{{ __('Select Season') }}</label>
+<div class="season-links d-flex flex-wrap">
+    @foreach ($serie->seasons as $season)
+    <div>
+        <a href="{{ route('series.seasons.show', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-light btn-season">{{ $season->title }}</a>
 
-            @role('admin')
-            <a href="{{ route('seasons.edit', ['season' => $season]) }}" class="btn btn-secondary btn-edit" role="button">📝 {{ __('Edit') }}</a>
+        @role('admin')
+        <a href="{{ route('seasons.edit', ['season' => $season]) }}" class="btn btn-secondary btn-edit" role="button">📝 {{ __('Edit') }}</a>
 
-            <form id="form-{{ $season->id }}" method="POST" action="{{ route('seasons.destroy', ['season' => $season]) }}" style="display: inline-block;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $season->id }}">🗑️ {{ __('Delete') }}</button>
-            </form>
+        <form id="form-{{ $season->id }}" method="POST" action="{{ route('seasons.destroy', ['season' => $season]) }}" style="display: inline-block;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $season->id }}">🗑️ {{ __('Delete') }}</button>
+        </form>
 
-            @endrole
-        </div>
-        @endforeach
+        @endrole
     </div>
+    @endforeach
 </div>
 
 @php
 $episodesInSeason = $episodes->where('season_id', $season->id);
 @endphp
 
-<div class="episode-container">
+<div class="episode-container" id="episodeContainer">
     @foreach ($episodesInSeason as $episode)
     <a href="{{ route('episodes.show', $episode) }}" class="episode-link">
         <div class="episode">
@@ -116,13 +114,7 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
     @endforeach
 </div>
 
-<script>
-    function confirmDelete(formId) {
-        $('#confirmModal-' + formId).modal('hide');
 
-        $('#' + formId).submit();
-    }
-</script>
 
 @role('admin')
 
@@ -149,9 +141,7 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
         background-repeat: no-repeat;
         font-family: 'Nunito', sans-serif;
         margin: 0;
-        /* Elimina el margen predeterminado del body */
         padding: 0;
-        /* Elimina el relleno predeterminado del body */
     }
 
     .episode-link {
@@ -162,7 +152,11 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
 
     .episode-container {
         display: flex;
-        /* Cambié de grid a flex para tener un contenedor horizontal */
+        overflow-x: auto;
+    }
+
+    #episodeContainer {
+        display: flex;
         overflow-x: auto;
     }
 
@@ -171,15 +165,33 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
         border-radius: 8px;
         text-align: center;
         transition: box-shadow 0.3s;
-        max-width: 200px;
-        /* Establecí un ancho máximo para cada episodio */
-        margin-right: 20px;
-        /* Agregué un margen derecho para separar los episodios */
+        max-width: 100%;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        scroll-snap-align: start;
     }
 
     .episode:hover {
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
+
+    .episode-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Agregado para centrar horizontalmente */
+        padding: 10px;
+    }
+
+    .favorite-button {
+        border: none;
+        background: none;
+        padding: 0;
+        font-size: inherit;
+        margin: 5px;
+        cursor: pointer;
+    }
+
 
     .episode-header {
         display: flex;
@@ -198,20 +210,11 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
         display: inline-block;
     }
 
-    .favorite-button {
-        border: none;
-        background: none;
-        padding: 0;
-        font-size: inherit;
-        margin-right: 10px;
-        margin: 5px;
-        cursor: pointer;
-    }
-
     .episode-cover {
-        max-width: 100%;
+        max-width: 40vh;
         height: auto;
-        border-radius: 8px;
+        border-radius: 12px;
+        /* Ajusta el radio de la esquina de la imagen */
     }
 
     .custom-label {

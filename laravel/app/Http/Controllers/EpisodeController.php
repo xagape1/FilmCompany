@@ -50,30 +50,28 @@ class EpisodeController extends Controller
     public function create(Serie $serie, Season $season)
     {
         $seasons = $serie->seasons;
-    
+
         return view('episodes.create', compact('serie', 'season', 'seasons'));
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Season $season)
+    public function store(Request $request, Season $season, Episode $episode)
     {
-        // Validar los archivos
         $validatedData = $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'season_id' => 'required|exists:seasons,id',
             'cover' => 'required|mimes:gif,jpeg,jpg,png,mp4',
             'intro' => 'required|mimes:gif,jpeg,jpg,png,mp4',
         ]);
 
         $title = $request->get('title');
         $description = $request->get('description');
-        
+
         $season_id = $request->get('season_id');
 
         $cover = $request->file('cover');
@@ -94,8 +92,8 @@ class EpisodeController extends Controller
                 'cover_id' => $filec->id,
                 'intro_id' => $filei->id,
             ]);
-            Log::debug("DB storage OK");
-            return redirect()->route('episodes.show', $episode)
+
+            return redirect()->route("pages-home")
                 ->with('success', __('Episode successfully saved'));
         } else {
             return redirect()->route("episodes.create")
