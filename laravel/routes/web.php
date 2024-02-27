@@ -9,6 +9,8 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeasonController;
+use App\Http\Controllers\EpisodeController;
+use App\Models\Episode;
 
 $controller_path = 'App\Http\Controllers';
 
@@ -29,12 +31,12 @@ Route::middleware([
  * GENERAL
  * 
  */
+
 Route::resource('files', FileController::class)
     ->middleware(['auth']);
 
 Route::resource('movies', MovieController::class)
     ->middleware(['auth']);
-
 
 Route::resource('series.seasons', SeasonController::class)->middleware(['auth']);
 
@@ -45,11 +47,21 @@ Route::resource('series.seasons', SeasonController::class)->middleware(['auth'])
  * 
  */
 
-    Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
-    Route::get('/movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
+Route::get('/series/{serie}/seasons', 'SeasonController@index')->name('seasons.index');
+Route::get('/series/{serie}/seasons/{season}', 'SeasonController@show')->name('series.seasons.show');
 
-    Route::get('/series', [SerieController::class, 'index'])->name('series.index');
-    Route::get('/series/{serie}', [SerieController::class, 'show'])->name('series.show');
+Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
+Route::get('/movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
+
+Route::get('/series', [SerieController::class, 'index'])->name('series.index');
+Route::get('/series/{serie}', [SerieController::class, 'show'])->name('series.show');
+
+
+
+
+
+
+
 
 /**
  * 
@@ -86,15 +98,23 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
      * SEASONS
      * 
      */
+    Route::post('/admin/series/{serie}/seasons', [SeasonController::class, 'store'])->name('seasons.store');
+    Route::get('/admin/seasons/{season}/edit', [SeasonController::class, 'edit'])->name('seasons.edit');
+    Route::put('/admin/seasons/{season}/update', [SeasonController::class, 'update'])->name('seasons.update');
+    Route::delete('/admin/seasons/{season}/destroy', [SeasonController::class, 'destroy'])->name('seasons.destroy');
+
+    /**
+     * 
+     * EPISODES
+     * 
+     */
+    Route::post('/admin/series/{serie}/seasons/{season}/episodes', [EpisodeController::class, 'store'])->name('episodes.store');
+    Route::get('/admin/series/{serie}/seasons/{season}/episodes/episode', [EpisodeController::class, 'create'])->name('episodes.create');
+    
+
+
 });
 
-Route::get('/series/{serie}/seasons', [SeasonController::class, 'index'])->name('seasons.index');
-Route::get('/admin/series/{serie}/seasons/create', [SeasonController::class, 'create'])->name('seasons.create');
-Route::post('/admin/series/{serie}/seasons', [SeasonController::class, 'store'])->name('series.seasons.store');
-Route::get('/series/{serie}/seasons/{season}', 'SeasonController@show')->name('series.seasons.show');
-Route::get('/admin/seasons/{season}/edit', [SeasonController::class, 'edit'])->name('seasons.edit');
-Route::put('/admin/seasons/{season}/update', [SeasonController::class, 'update'])->name('seasons.update');
-Route::delete('/admin/seasons/{season}/destroy', [SeasonController::class, 'destroy'])->name('seasons.destroy');
 
 /**
  * 

@@ -15,17 +15,20 @@ $configData = Helper::appClasses();
 
 @section('content')
 <div class="containercreate">
+    <h1 class="text-center h2 fw-bold">Crear Season</h1>
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="border posts">
-                    <a href="{{ route('seasons.store', ['serie' => $serie->id]) }}" class="btn btn-primary">
-                        Add Season
-                    </a>
-                    <div class="form-group"> <label for="title">{{ __('Title') }}</label> <textarea id="title" name="title" class="form-control"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
-                    <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
+                    <form method="post" action="{{ route('series.seasons.store', $serie ) }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="title">{{ __('Title') }}</label>
+                            <textarea id="title" name="title" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
+                        <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
                     </form>
                 </div>
             </div>

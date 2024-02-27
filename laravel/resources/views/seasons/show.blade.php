@@ -10,6 +10,7 @@ User
 @extends('layouts/layoutMaster')
 
 @section('box-title')
+
 {{ __('series') . " " . $serie->id }}
 {{ __('seasons') . " " . $season->id }}
 
@@ -62,7 +63,7 @@ User
     <label for="season_id" class="custom-label">{{ __('Select Season') }}</label>
     <div class="season-links d-flex flex-wrap">
         @foreach ($serie->seasons as $season)
-        <div class="season-item mx-2 my-2">
+        <div>
             <a href="{{ route('series.seasons.show', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-light btn-season">{{ $season->title }}</a>
 
             @role('admin')
@@ -71,7 +72,7 @@ User
             <form id="form-{{ $season->id }}" method="POST" action="{{ route('seasons.destroy', ['season' => $season]) }}" style="display: inline-block;">
                 @csrf
                 @method('DELETE')
-                <button type="button" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $season->id }}">🗑️ {{ __('Delete') }}</button>
+                <button type="submit" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $season->id }}">🗑️ {{ __('Delete') }}</button>
             </form>
 
             @endrole
@@ -80,8 +81,6 @@ User
     </div>
 </div>
 
-
-
 <script>
     function confirmDelete(formId) {
         $('#confirmModal-' + formId).modal('hide');
@@ -89,9 +88,21 @@ User
         $('#' + formId).submit();
     }
 </script>
+@role('admin')
 
+<a href="{{ route('episodes.create', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-primary">Crear episodio</a>
 
+@endrole
 
+@role('admin')
+<form method="post" class="separar" action="{{ route('seasons.store', ['serie' => $serie]) }}" enctype="multipart/form-data">
+    @csrf
+    <div class="form-group"> <label for="title">{{ __('Add Seasons') }}</label> <textarea id="title" name="title" class="form-control"></textarea>
+        <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
+        <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
+    </div>
+</form>
+@endrole
 
 @endsection
 
@@ -105,7 +116,7 @@ User
 
     .custom-label {
         display: block;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         font-weight: bold;
         margin-bottom: 10px;
         margin-top: 10px;
@@ -126,7 +137,7 @@ User
     }
 
     .tableshowtexto h1 {
-        font-size: 3rem;
+        font-size: 3.5rem;
         margin-bottom: 0;
     }
 

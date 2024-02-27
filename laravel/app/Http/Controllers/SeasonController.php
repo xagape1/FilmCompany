@@ -16,11 +16,12 @@ class SeasonController extends Controller
 {
     public function index(Serie $serie)
     {
-        return view("seasons.index", [
-            "seasons" => Season::all(),
-            "serie" => $serie,
+        return view('seasons.index', [
+            'serie' => $serie,
+            'seasons' => Season::All(),
         ]);
     }
+
 
     public function create(Serie $serie)
     {
@@ -29,13 +30,14 @@ class SeasonController extends Controller
         ]);
     }
 
+
     public function store(Request $request, Serie $serie)
     {
         $validatedData = $request->validate([
             'title' => 'required',
         ]);
 
-        $title = $request->get('title');
+        $title = $request->input('title');
         $serie_id = $serie->id;
 
         if ($title) {
@@ -44,29 +46,29 @@ class SeasonController extends Controller
                 'serie_id' => $serie_id,
             ]);
 
-            return redirect()->route('series.show', $serie)
-                ->with('success', __('Season successfully saved'));
+            return redirect()->route('series.seasons.show', [$serie, $season])
+                ->with('success', __('Season successfully created'));
         } else {
-            // Patrón PRG con mensaje de error
             return redirect()->route('series.show', $serie)
-                ->with('success', __('Season successfully saved'));
+                ->with('error', __('Failed to create season'));
         }
     }
 
-    public function show(Serie $serie, Season $seasons)
+    public function show($serie, $season)
     {
-        $id = auth()->id();
 
-        $serie = Serie::findOrFail($id);
-        $season = Season::findOrFail($id);
+        $id = auth()->id();
+        $serie = Serie::findOrFail($serie);
+        $season = Season::findOrFail($season);
 
         if (!$serie) {
             abort(404);
         }
-    
+
         $seasons = $serie->seasons;
-    
+
         return view("seasons.show", [
+            'episodes' => Episode::all(),
             'season' => $season,
             'serie' => $serie,
             'seasons' => $seasons,
@@ -74,34 +76,58 @@ class SeasonController extends Controller
             "id" => $id,
         ]);
     }
-    
-    
 
-
-    public function edit($id)
+    // public function edit($id)
+    // {
+    //     $season = Season::find($id);
+    //     return view('seasons.edit', compact('season'));
+    // }
+    public function edit(Season $season)
     {
-        $season = Season::find($id);
-        return view('seasons.edit', compact('season'));
+        return view("seasons.edit", [
+            'season' => $season,
+        ]);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Season  $season
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Season $season)
     {
         $validatedData = $request->validate([
             'title' => 'required',
             'serie_id' => 'required|exists:series,id',
         ]);
 
-        $season = Season::find($id);
-        $season->update($validatedData);
+        $title = $request->input('title');
+        $serie_id = $request->input('serie_id');
 
-        return redirect()->route('seasons.show', $season->id);
+        $season->update([
+            'title' => $title,
+            'serie_id' => $serie_id,
+        ]);
+
+        Log::debug("DB update OK");
+        return redirect()->route('series.seasons.show', ['serie' => $season->serie, 'season' => $season])
+            ->with('success', __('Season successfully updated'));
     }
 
-    public function destroy($id)
-    {
-        $season = Season::find($id);
-        $season->delete();
 
-        return redirect()->route('seasons.show', $season->id);
+
+    public function destroy(Season $season)
+    {
+        if ($season) {
+
+            $season->delete();
+            return redirect()->route("pages-home")
+                ->with('success', 'Season successfully deleted');
+        } else {
+            return redirect()->route("pages-home")
+                ->with('error', __('Season error, no delete '));
+        }
     }
 }

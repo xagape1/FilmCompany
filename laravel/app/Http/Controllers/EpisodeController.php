@@ -10,6 +10,7 @@ use App\Models\File;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Season;
+use App\Models\Serie;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +34,6 @@ class EpisodeController extends Controller
         $episodes = $episodesQuery->get();
 
         $files = File::all();
-        $genres = Genre::all();
 
         $data = [
             'episodes' => $episodes,
@@ -50,8 +50,9 @@ class EpisodeController extends Controller
      */
     public function create()
     {
-        $genres = Genre::all();
-        return view("episodes.create");
+        $series = Serie::all();
+        $seasons = Season::all();
+        return view("episodes.create", compact('series', 'seasons'));
     }
 
     /**
@@ -114,6 +115,7 @@ class EpisodeController extends Controller
         $comments = $episode->comments;
         return view('episodes.show', [
             'episode' => $episode,
+            'series' => Serie::all(),
             'seasons' => Season::all(),
             'files' => File::all(),
             'comments' => $comments,
@@ -132,6 +134,7 @@ class EpisodeController extends Controller
         return view("episodes.edit", [
             'episode' => $episode,
             'seasons' => Season::all(),
+            'series' => Serie::all(),
             "files" => File::all(),
         ]);
     }
@@ -160,13 +163,12 @@ class EpisodeController extends Controller
         $cover = $request->file('cover');
         $intro = $request->file('intro');
 
-        Log::debug("Updating post at DB...");
         $episode->update([
             'title' => $title,
             'description' => $description,
             'season_id' => $seasonId,
         ]);
-        Log::debug("DB update OK");
+        
         if ($cover) {
             $filec = new File();
             $filecOk = $filec->diskSave($cover);

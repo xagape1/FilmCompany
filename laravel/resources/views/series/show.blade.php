@@ -54,10 +54,11 @@
 @endrole
 
 <div class="form-group">
+
     <label for="season_id" class="custom-label">{{ __('Select Season') }}</label>
     <div class="season-links d-flex flex-wrap">
         @foreach ($serie->seasons as $season)
-        <div class="season-item mx-2 my-2">
+        <div >
             <a href="{{ route('series.seasons.show', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-light btn-season">{{ $season->title }}</a>
 
             @role('admin')
@@ -66,7 +67,7 @@
             <form id="form-{{ $season->id }}" method="POST" action="{{ route('seasons.destroy', ['season' => $season]) }}" style="display: inline-block;">
                 @csrf
                 @method('DELETE')
-                <button type="button" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $season->id }}">🗑️ {{ __('Delete') }}</button>
+                <button type="submit" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $season->id }}">🗑️ {{ __('Delete') }}</button>
             </form>
 
             @endrole
@@ -74,7 +75,6 @@
         @endforeach
     </div>
 </div>
-
 
 
 <script>
@@ -97,9 +97,9 @@
 </form>
 
 @endrole
-<table class="tableshowsynopsis">
+<table class="custom-synopsis">
     <tr>
-        <td class="synopsis">{{ $serie->description }}</td>
+        <td class="ESPACIO">{{ $serie->description }}</td>
     </tr>
 </table>
 
@@ -115,10 +115,23 @@
 
     .custom-label {
         display: block;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         font-weight: bold;
         margin-bottom: 10px;
         margin-top: 10px;
+    }
+
+    .custom-synopsis {
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .ESPACIO {
+        padding: 1vh;
     }
 
     .content-container {
@@ -136,7 +149,7 @@
     }
 
     .tableshowtexto h1 {
-        font-size: 3rem;
+        font-size: 4rem;
         margin-bottom: 0;
     }
 
@@ -148,7 +161,6 @@
         border-top-right-radius: 15px;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 20px;
-        color: #000;
     }
 
     .modal-content {

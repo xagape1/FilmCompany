@@ -121,10 +121,12 @@ class SerieController extends Controller
     {
         $id = auth()->id();
 
+        $seasons = $serie->seasons;
+
         return view('series.show', [
             'serie' => $serie,
             'genres' => Genre::all(),
-            'seasons' => Season::all(),
+            'seasons' => $seasons,
             'files' => File::all(),
             'id' => $id,
         ]);
