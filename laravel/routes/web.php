@@ -57,7 +57,7 @@ Route::get('/series', [SerieController::class, 'index'])->name('series.index');
 Route::get('/series/{serie}', [SerieController::class, 'show'])->name('series.show');
 
 
-
+Route::get('/episodes/{episode}', [EpisodeController::class, 'show'])->name('episodes.show');
 
 
 

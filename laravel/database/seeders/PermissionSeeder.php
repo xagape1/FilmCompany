@@ -53,17 +53,14 @@ class PermissionSeeder extends Seeder
         $payRole->givePermissionTo(['movies.list','movies.read','seasons.list','seasons.read','episodes.list','episodes.read' ]);
 
         $user = User::find(1);
-        $user2 = User::find(2);
+
 
         if ($user) {
             $user->assignRole($adminRole);
         } else { echo "Usuario no encontrado.";
         }
 
-        if ($user2) {
-            $user2->assignRole($payRole);
-        } else {  echo "Usuario no encontrado.";
-        }
+
 
     }
 }

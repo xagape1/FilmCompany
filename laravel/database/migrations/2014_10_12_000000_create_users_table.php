@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -45,7 +46,6 @@ return new class extends Migration {
             'updated_at' => Carbon::now(),
         ]);
         $pay->save();
-
     }
 
     /**
