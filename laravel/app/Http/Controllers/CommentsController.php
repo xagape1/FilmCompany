@@ -47,25 +47,20 @@ class CommentsController extends Controller
             'description' => 'required',
         ]);
 
-        // Obtener datos del formulario
         $description = $request->get('description');
         $episode_id = $episode->id;
         $author_id = auth()->user()->id;
 
         if ($description) {
-            // Almacenar datos en BD
             Log::debug("Saving post at DB...");
             $comment = Comment::create([
                 'description' => $description,
                 'episode_id' => $episode_id,
                 'author_id' => $author_id,
             ]);
-            Log::debug("DB storage OK");
-            // Patrón PRG con mensaje de éxito
             return redirect()->route('episodes.show', $episode)
                 ->with('success', __('Episode successfully saved'));
         } else {
-            // Patrón PRG con mensaje de error
             return redirect()->route('episodes.show', $episode)
                 ->with('success', __('Episode successfully saved'));
         }

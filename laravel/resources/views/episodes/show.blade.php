@@ -10,24 +10,24 @@ $configData = Helper::appClasses();
 @extends('layouts/layoutMaster')
 
 @section('box-title')
-{{ __('movies') . " " . $movie->id }}
+{{ __('episodes') . " " . $episode->id }}
 @endsection
 
 @section('content')
 <div class="card">
     <table class="tableshowtexto">
         <tr>
-            <h1 class="text h2 fw-bold">{{ $movie->title }}</strong></h1>
+            <h1 class="text h2 fw-bold">{{ $episode->title }}</strong></h1>
         </tr>
 
         </tbody>
     </table>
     <table>
         @foreach ($files as $file)
-        @if($file->id == $movie->intro_id)
+        @if($file->id == $episode->intro_id)
         <div>
             <video class="showvideo" controls>
-                <source alt="Pelicula" type="video/mp4" src='{{ asset("storage/{$file->filepath}") }}' />
+                <source alt="Episode" type="video/mp4" src='{{ asset("storage/{$file->filepath}") }}' />
             </video>
         </div>
         @endif
@@ -39,7 +39,7 @@ $configData = Helper::appClasses();
         <div>
             <table class="tableshowsynopsis">
                 <tr>
-                    <td class="synopsis">{{ $movie->description }}</td>
+                    <td class="synopsis">{{ $episode->description }}</td>
                 </tr>
 
                 </tbody>
@@ -51,7 +51,7 @@ $configData = Helper::appClasses();
         <div class="col-md-8 ">
             <div class="card ">
                 <h1 class="text-center h2 fw-bold">Write your Review</h1>
-                <form method="post" class="separar" action="{{ route('movies.reviews.store', ['movie' => $movie]) }}"
+                <form method="post" class="separar" action="{{ route('episodes.comments.store', ['episode' => $episode]) }}"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
@@ -68,18 +68,18 @@ $configData = Helper::appClasses();
         <div class="col-md-8">
             <div class="card">
                 <h1 class="linea-inferior text-center fw-bold">Reviews</h1>
-                @if(count($reviews) > 0)
-                @foreach ($reviews as $review)
+                @if(count($comments) > 0)
+                @foreach ($comments as $comment)
                 <div class="row linea-inferior">
                     <div class="card border col-md-8">
                         <div class="d-flex flex-column justify-content-between align-items-start">
                             <div>
-                                <p><strong>{{ $review->user->name }}</strong></p>
-                                <p style="overflow-y: auto; max-height: 200px;">{{ $review->description }}</p>
+                                <p><strong>{{ $comment->user->name }}</strong></p>
+                                <p style="overflow-y: auto; max-height: 200px;">{{ $comment->description }}</p>
                             </div>
-                            @if(auth()->user()->hasRole('admin') || $review->author_id == $id)
+                            @if(auth()->user()->hasRole('admin') || $comment->author_id == $id)
                             <form id="form" method="POST"
-                                action="{{ route('movies.reviews.destroy', [$movie, $review]) }}"
+                                action="{{ route('episodes.comments.destroy', [$episode, $comment]) }}"
                                 style="display: inline-block;">
                                 @csrf
                                 @method("DELETE")
@@ -90,11 +90,11 @@ $configData = Helper::appClasses();
                             <div>
                                 <div>
                                     <td><strong>{{ __('Created') }}</strong></td>
-                                    <td>{{ $review->created_at }}</td>
+                                    <td>{{ $comment->created_at }}</td>
                                 </div>
                                 <div>
                                     <td><strong>{{ __('Updated') }}</strong></td>
-                                    <td>{{ $review->updated_at }}</td>
+                                    <td>{{ $comment->updated_at }}</td>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@ $configData = Helper::appClasses();
                 </div>
                 @endforeach
                 @else
-                <p>There are no reviews, write your opinion about the movie!!</p>
+                <p>There are no reviews, write your opinion about the episode$episode!!</p>
                 @endif
             </div>
         </div>
@@ -112,13 +112,13 @@ $configData = Helper::appClasses();
     @role('admin')
     <div class="showtexto">
         <!-- Buttons -->
-        <a class="btn btn-secondary" href="{{ route('movies.edit', $movie) }}" role="button">📝 {{ __('Edit Movie')
+        <a class="btn btn-secondary" href="{{ route('episodes.edit', $episode) }}" role="button">📝 {{ __('Edit Episode')
             }}</a>
-        <form id="form" method="POST" action="{{ route('movies.destroy', $movie) }}" style="display: inline-block;">
+        <form id="form" method="POST" action="{{ route('episodes.destroy', $episode) }}" style="display: inline-block;">
             @csrf
             @method("DELETE")
             <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#confirmModal">🗑️ {{ __('Delete Movie') }}</button>
+                data-bs-target="#confirmModal">🗑️ {{ __('Delete Episode') }}</button>
         </form>
 
         <!-- Modal -->
@@ -130,7 +130,7 @@ $configData = Helper::appClasses();
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>{{ __('You are gonna delete movie ') . $movie->id }}</p>
+                        <p>{{ __('You are gonna delete episode$episode ') . $episode->id }}</p>
                         <p>{{ __('This action cannot be undone!') }}</p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

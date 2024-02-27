@@ -81,6 +81,41 @@ User
     </div>
 </div>
 
+@php
+$episodesInSeason = $episodes->where('season_id', $season->id);
+@endphp
+
+<div class="episode-container">
+    @foreach ($episodesInSeason as $episode)
+    <a href="{{ route('episodes.show', $episode) }}" class="episode-link">
+        <div class="episode">
+            <div class="episode-header">
+                <div class="episode-title">{{ $episode->title }}</div>
+                <div class="episode-actions">
+                    @php
+                    $isFavorite = Auth::user()->favoritedE->contains('id', $episode->id);
+                    @endphp
+                    <form method="post" class="favorite-form" action="{{ $isFavorite ? route('episodes.unfavorite', $episode) : route('episodes.favorite', $episode) }}" enctype="multipart/form-data">
+                        @csrf
+                        @if($isFavorite)
+                        @method('DELETE')
+                        @endif
+                        <button type="submit" class="favorite-button">
+                            <i class="{{ $isFavorite ? 'fa-solid' : 'fa-regular ' }} fa-star"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @foreach ($files as $file)
+            @if($file->id == $episode->cover_id)
+            <img alt="Portada Pelicula" src='{{ asset("storage/{$file->filepath}") }}' class="episode-cover" />
+            @endif
+            @endforeach
+        </div>
+    </a>
+    @endforeach
+</div>
+
 <script>
     function confirmDelete(formId) {
         $('#confirmModal-' + formId).modal('hide');
@@ -88,6 +123,7 @@ User
         $('#' + formId).submit();
     }
 </script>
+
 @role('admin')
 
 <a href="{{ route('episodes.create', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-primary">Crear episode</a>
@@ -112,6 +148,70 @@ User
         background-position: center;
         background-repeat: no-repeat;
         font-family: 'Nunito', sans-serif;
+        margin: 0;
+        /* Elimina el margen predeterminado del body */
+        padding: 0;
+        /* Elimina el relleno predeterminado del body */
+    }
+
+    .episode-link {
+        display: flex;
+        text-decoration: none;
+        width: 100%;
+    }
+
+    .episode-container {
+        display: flex;
+        /* Cambié de grid a flex para tener un contenedor horizontal */
+        overflow-x: auto;
+    }
+
+    .episode {
+        border: 2px solid transparent;
+        border-radius: 8px;
+        text-align: center;
+        transition: box-shadow 0.3s;
+        max-width: 200px;
+        /* Establecí un ancho máximo para cada episodio */
+        margin-right: 20px;
+        /* Agregué un margen derecho para separar los episodios */
+    }
+
+    .episode:hover {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .episode-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .episode-title {
+        font-size: 20px;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .favorite-form {
+        display: inline-block;
+    }
+
+    .favorite-button {
+        border: none;
+        background: none;
+        padding: 0;
+        font-size: inherit;
+        margin-right: 10px;
+        margin: 5px;
+        cursor: pointer;
+    }
+
+    .episode-cover {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
     }
 
     .custom-label {
@@ -124,7 +224,8 @@ User
 
     .content-container {
         @foreach ($files as $file) @if($file->id ==$serie->cover_id) background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url('{{ asset("storage/{$file->filepath}") }}');
-        @endif @endforeach background-size: 250% 200%;
+        @endif @endforeach background-size: cover;
+        /* Cambié a cover para cubrir completamente el fondo */
         background-position: center;
         background-repeat: no-repeat;
         padding: 15vh;

@@ -47,13 +47,11 @@ class ReviewsController extends Controller
             'description' => 'required',
         ]);
 
-        // Obtener datos del formulario
         $description = $request->get('description');
         $movie_id = $movie->id;
-        $author_id = auth()->user()->id;  // Obtener el ID del usuario actual
+        $author_id = auth()->user()->id;  
 
         if ($description) {
-            // Almacenar datos en BD
             Log::debug("Saving post at DB...");
             $review = Review::create([
                 'description' => $description,

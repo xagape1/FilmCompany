@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,7 +11,6 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\EpisodeController;
-use App\Models\Episode;
 
 $controller_path = 'App\Http\Controllers';
 
@@ -110,7 +110,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
      */
     Route::post('/admin/episodes', [EpisodeController::class, 'store'])->name('episodes.store');
     Route::get('/admin/series/{serie}/seasons/{season}/episodes/episode', [EpisodeController::class, 'create'])->name('episodes.create');
-    
+    Route::get('/admin/episodes/{episode}/edit', [EpisodeController::class, 'edit'])->name('episodes.edit');
+    Route::delete('/admin/episodes/{episode}/destroy', [EpisodeController::class, 'destroy'])->name('episodes.destroy');
 
 
 });
@@ -130,7 +131,7 @@ Route::resource('movies.reviews', ReviewsController::class)->middleware(['auth']
  * 
  */
 
-Route::resource('episodes.reviews', ReviewsController::class)->middleware(['auth']);
+Route::resource('episodes.comments', CommentsController::class)->middleware(['auth']);
 
 Route::middleware(['auth'])->group(function () {
 
