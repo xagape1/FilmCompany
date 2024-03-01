@@ -51,8 +51,7 @@ $configData = Helper::appClasses();
         <div class="col-md-8 ">
             <div class="card ">
                 <h1 class="text-center h2 fw-bold">Write your Review</h1>
-                <form method="post" class="separar" action="{{ route('episodes.comments.store', ['episode' => $episode]) }}"
-                    enctype="multipart/form-data">
+                <form method="post" class="separar" action="{{ route('episodes.comments.store', ['episode' => $episode]) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <textarea id="description" name="description" class="form-control"></textarea>
@@ -78,23 +77,16 @@ $configData = Helper::appClasses();
                                 <p style="overflow-y: auto; max-height: 200px;">{{ $comment->description }}</p>
                             </div>
                             @if(auth()->user()->hasRole('admin') || $comment->author_id == $id)
-                            <form id="form" method="POST"
-                                action="{{ route('episodes.comments.destroy', [$episode, $comment]) }}"
-                                style="display: inline-block;">
+                            <form id="form" method="POST" action="{{ route('episodes.comments.destroy', [$episode, $comment]) }}" style="display: inline-block;">
                                 @csrf
                                 @method("DELETE")
-                                <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#confirmModal">🗑️ {{ __('Delete Review') }}</button>
+                                <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">🗑️ {{ __('Delete Review') }}</button>
                             </form>
                             @endif
                             <div>
                                 <div>
                                     <td><strong>{{ __('Created') }}</strong></td>
                                     <td>{{ $comment->created_at }}</td>
-                                </div>
-                                <div>
-                                    <td><strong>{{ __('Updated') }}</strong></td>
-                                    <td>{{ $comment->updated_at }}</td>
                                 </div>
                             </div>
                         </div>
@@ -117,8 +109,7 @@ $configData = Helper::appClasses();
         <form id="form" method="POST" action="{{ route('episodes.destroy', $episode) }}" style="display: inline-block;">
             @csrf
             @method("DELETE")
-            <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#confirmModal">🗑️ {{ __('Delete Episode') }}</button>
+            <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">🗑️ {{ __('Delete Episode') }}</button>
         </form>
 
         <!-- Modal -->

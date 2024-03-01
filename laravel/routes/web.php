@@ -112,8 +112,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/admin/series/{serie}/seasons/{season}/episodes/episode', [EpisodeController::class, 'create'])->name('episodes.create');
     Route::get('/admin/episodes/{episode}/edit', [EpisodeController::class, 'edit'])->name('episodes.edit');
     Route::delete('/admin/episodes/{episode}/destroy', [EpisodeController::class, 'destroy'])->name('episodes.destroy');
-
-
 });
 
 
@@ -159,8 +157,8 @@ Route::middleware(['auth'])->group(function () {
      * 
      */
 
-    Route::post('/series/{serie}/episodes', [App\Http\Controllers\EpisodeController::class, 'favorite'])->name('episodes.favorite');
-    Route::delete('/series/{serie}/episodes', [App\Http\Controllers\EpisodeController::class, 'unfavorite'])->name('episodes.unfavorite');
+    Route::post('/episodes/{episode}/episodes', [App\Http\Controllers\EpisodeController::class, 'favorite'])->name('episodes.favorite');
+    Route::delete('/episodes/{episode}/episodes', [App\Http\Controllers\EpisodeController::class, 'unfavorite'])->name('episodes.unfavorite');
 
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 });

@@ -61,19 +61,16 @@ User
 
 <label for="season_id" class="custom-label">{{ __('Select Season') }}</label>
 <div class="season-links d-flex flex-wrap">
-    @foreach ($serie->seasons as $season)
+    @foreach ($serie->seasons as $seasonItem)
     <div>
-        <a href="{{ route('series.seasons.show', ['serie' => $serie, 'season' => $season]) }}" class="btn btn-light btn-season">{{ $season->title }}</a>
-
+        <a href="{{ route('series.seasons.show', ['serie' => $serie, 'season' => $seasonItem]) }}" class="btn btn-light btn-season">{{ $seasonItem->title }}</a>
         @role('admin')
-        <a href="{{ route('seasons.edit', ['season' => $season]) }}" class="btn btn-secondary btn-edit" role="button">📝 {{ __('Edit') }}</a>
-
-        <form id="form-{{ $season->id }}" method="POST" action="{{ route('seasons.destroy', ['season' => $season]) }}" style="display: inline-block;">
+        <a href="{{ route('seasons.edit', ['season' => $seasonItem]) }}" class="btn btn-secondary btn-edit" role="button">📝 {{ __('Edit') }}</a>
+        <form id="form-{{ $seasonItem->id }}" method="POST" action="{{ route('seasons.destroy', ['season' => $seasonItem]) }}" style="display: inline-block;">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $season->id }}">🗑️ {{ __('Delete') }}</button>
+            <button type="submit" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $seasonItem->id }}">🗑️ {{ __('Delete') }}</button>
         </form>
-
         @endrole
     </div>
     @endforeach

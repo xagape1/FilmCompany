@@ -9,91 +9,97 @@
     <div class="header">
         <h1 class="title">FAVORITES</h1>
     </div>
-    @if(count($favoriteMovies) <= 0 && count($favoriteSeries) <=0 && count($favoriteEpisodes) <=0) <p
-        class="no-favorites">No favorite items found.</p>
-        @else
-        <ul class="movie-list">
-            @foreach ($favoriteMovies as $favoriteMovie)
-            <li class="movie-item">
-                <a href="{{ route('movies.show', $favoriteMovie->id) }}">
-                    <div class="movie">
-                        <div class="header">{{ $favoriteMovie->title }}</div>
-                        @foreach ($data['files'] as $file)
-                        @if($file->id == $favoriteMovie->cover_id)
-                        <img class="cover-image" alt="Portada Película"
-                            src='{{ asset("storage/{$file->filepath}") }}' />
-                        @endif
-                        @endforeach
-                        <form method="post" class="favorite-form"
-                            action="{{ route('movies.unfavorite', $favoriteMovie) }}" enctype="multipart/form-data">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="favorite-button">
-                                <i class="fa-solid fa-star"></i> Remove Favorite
-                            </button>
-                        </form>
-                    </div>
-                </a>
-            </li>
-            @endforeach
-        </ul>
-        <div class="header">
-            <h1 class="title">FAVORITES SERIES</h1>
-        </div>
-        <ul class="movie-list">
-            @foreach ($favoriteSeries as $favoriteSerie)
-            <li class="movie-item">
-                <a href="{{ route('series.show', $favoriteSerie->id) }}">
-                    <div class="movie">
-                        <div class="header">{{ $favoriteSerie->title }}</div>
-                        @foreach ($data['files'] as $file)
-                        @if($file->id == $favoriteSerie->cover_id)
-                        <img class="cover-image" alt="Portada Película"
-                            src='{{ asset("storage/{$file->filepath}") }}' />
-                        @endif
-                        @endforeach
-                        <form method="post" class="favorite-form"
-                            action="{{ route('series.unfavorite', $favoriteSerie) }}" enctype="multipart/form-data">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="favorite-button">
-                                <i class="fa-solid fa-star"></i> Remove Favorite
-                            </button>
-                        </form>
-                    </div>
-                </a>
-            </li>
-            @endforeach
-        </ul>
-        <div class="header">
-            <h1 class="title">FAVORITES EPISODES</h1>
-        </div>
-        <ul class="movie-list">
-            @foreach ($favoriteEpisodes as $favoriteEpisode)
-            <li class="movie-item">
-                <a href="{{ route('episode.show', $favoriteEpisode->id) }}">
-                    <div class="movie">
-                        <div class="header">{{ $favoriteEpisode->title }}</div>
-                        @foreach ($data['files'] as $file)
-                        @if($file->id == $favoriteEpisode->cover_id)
-                        <img class="cover-image" alt="Portada Película"
-                            src='{{ asset("storage/{$file->filepath}") }}' />
-                        @endif
-                        @endforeach
-                        <form method="post" class="favorite-form"
-                            action="{{ route('episodes.unfavorite', $favoriteEpisode) }}" enctype="multipart/form-data">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="favorite-button">
-                                <i class="fa-solid fa-star"></i> Remove Favorite
-                            </button>
-                        </form>
-                    </div>
-                </a>
-            </li>
-            @endforeach
-        </ul>
-        @endif
+
+    @if(count($favoriteMovies) > 0)
+    <div class="header">
+        <h1 class="title">FAVORITES MOVIES</h1>
+    </div>
+    <ul class="movie-list">
+        @foreach ($favoriteMovies as $favoriteMovie)
+        <li class="movie-item">
+            <a href="{{ route('movies.show', $favoriteMovie->id) }}">
+                <div class="movie">
+                    <div class="header">{{ $favoriteMovie->title }}</div>
+                    @foreach ($data['files'] as $file)
+                    @if($file->id == $favoriteMovie->cover_id)
+                    <img class="cover-image" alt="Portada Película" src='{{ asset("storage/{$file->filepath}") }}' />
+                    @endif
+                    @endforeach
+                    <form method="post" class="favorite-form" action="{{ route('movies.unfavorite', $favoriteMovie) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="favorite-button">
+                            <i class="fa-solid fa-star"></i> Remove Favorite
+                        </button>
+                    </form>
+                </div>
+            </a>
+        </li>
+        @endforeach
+    </ul>
+    @endif
+
+    @if(count($favoriteSeries) > 0)
+    <div class="header">
+        <h1 class="title">FAVORITES SERIES</h1>
+    </div>
+    <ul class="movie-list">
+        @foreach ($favoriteSeries as $favoriteSerie)
+        <li class="movie-item">
+            <a href="{{ route('series.show', $favoriteSerie->id) }}">
+                <div class="movie">
+                    <div class="header">{{ $favoriteSerie->title }}</div>
+                    @foreach ($data['files'] as $file)
+                    @if($file->id == $favoriteSerie->cover_id)
+                    <img class="cover-image" alt="Portada Película" src='{{ asset("storage/{$file->filepath}") }}' />
+                    @endif
+                    @endforeach
+                    <form method="post" class="favorite-form" action="{{ route('series.unfavorite', $favoriteSerie) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="favorite-button">
+                            <i class="fa-solid fa-star"></i> Remove Favorite
+                        </button>
+                    </form>
+                </div>
+            </a>
+        </li>
+        @endforeach
+    </ul>
+    @endif
+
+    @if(count($favoriteEpisodes) > 0)
+    <div class="header">
+        <h1 class="title">FAVORITES EPISODES</h1>
+    </div>
+    <ul class="movie-list">
+        @foreach ($favoriteEpisodes as $favoriteEpisode)
+        <li class="movie-item">
+            <a href="{{ route('episodes.show', $favoriteEpisode->id) }}">
+                <div class="movie">
+                    <div class="header">{{ $favoriteEpisode->title }}</div>
+                    @foreach ($data['files'] as $file)
+                    @if($file->id == $favoriteEpisode->cover_id)
+                    <img class="cover-image" alt="Portada Película" src='{{ asset("storage/{$file->filepath}") }}' />
+                    @endif
+                    @endforeach
+                    <form method="post" class="favorite-form" action="{{ route('episodes.unfavorite', $favoriteEpisode) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="favorite-button">
+                            <i class="fa-solid fa-star"></i> Remove Favorite
+                        </button>
+                    </form>
+                </div>
+            </a>
+        </li>
+        @endforeach
+    </ul>
+    @endif
+
+    @if(count($favoriteMovies) <= 0 && count($favoriteSeries) <= 0 && count($favoriteEpisodes) <= 0)
+    <p class="no-favorites">No favorite items found.</p>
+    @endif
 </div>
 
 @endrole

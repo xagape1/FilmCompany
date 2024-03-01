@@ -119,11 +119,11 @@ class CommentsController extends Controller
             // Eliminar reseña de BD
             $comment->delete();
             // Patrón PRG con mensaje de éxito
-            return redirect()->route('episode.show', $episode)
+            return redirect()->route('episodes.show', $episode)
                 ->with('success', __('Review successfully deleted'));
         } else {
             // Patrón PRG con mensaje de error
-            return redirect()->route('episode.show', $episode)
+            return redirect()->route('episodes.show', $episode)
                 ->with('error', __('You do not have permission to delete this review'));
         }
     }
