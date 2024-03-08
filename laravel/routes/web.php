@@ -22,7 +22,6 @@ Route::middleware([
     $controller_path = 'App\Http\Controllers';
 
     Route::get('/', $controller_path . '\pages\HomePage@index')->name('pages-home');
-    Route::get('/page-2', $controller_path . '\pages\Page2@index')->name('pages-page-2');
 });
 
 
@@ -38,8 +37,8 @@ Route::resource('files', FileController::class)
 Route::resource('movies', MovieController::class)
     ->middleware(['auth']);
 
-Route::resource('series.seasons', SeasonController::class)->middleware(['auth']);
-
+Route::resource('series.seasons', SeasonController::class)
+    ->middleware(['auth']);
 
 /**
  * 
@@ -47,21 +46,19 @@ Route::resource('series.seasons', SeasonController::class)->middleware(['auth'])
  * 
  */
 
-Route::get('/series/{serie}/seasons', 'SeasonController@index')->name('seasons.index');
-Route::get('/series/{serie}/seasons/{season}', 'SeasonController@show')->name('series.seasons.show');
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
 
-Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
-Route::get('/movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
+    Route::get('/series/{serie}/seasons', 'SeasonController@index')->name('seasons.index');
+    Route::get('/series/{serie}/seasons/{season}', 'SeasonController@show')->name('series.seasons.show');
 
-Route::get('/series', [SerieController::class, 'index'])->name('series.index');
-Route::get('/series/{serie}', [SerieController::class, 'show'])->name('series.show');
+    Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
+    Route::get('/movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
 
+    Route::get('/series', [SerieController::class, 'index'])->name('series.index');
+    Route::get('/series/{serie}', [SerieController::class, 'show'])->name('series.show');
 
-Route::get('/episodes/{episode}', [EpisodeController::class, 'show'])->name('episodes.show');
-
-
-
-
+    Route::get('/episodes/{episode}', [EpisodeController::class, 'show'])->name('episodes.show');
+});
 
 /**
  * 
@@ -112,6 +109,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/admin/series/{serie}/seasons/{season}/episodes/episode', [EpisodeController::class, 'create'])->name('episodes.create');
     Route::get('/admin/episodes/{episode}/edit', [EpisodeController::class, 'edit'])->name('episodes.edit');
     Route::delete('/admin/episodes/{episode}/destroy', [EpisodeController::class, 'destroy'])->name('episodes.destroy');
+    Route::put('/admin/episodes/{episode}/update', [EpisodeController::class, 'update'])->name('episodes.update');
+
 });
 
 
