@@ -147,7 +147,7 @@ section {
 }
 
 .movie img {
-  width: 37vh;
+  width: 40vh;
   height: 25vh;
   border-radius: 8px;
 }
@@ -221,7 +221,7 @@ section {
 
 .synopsis {
   margin-top: 2vh;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.6;
 
 }

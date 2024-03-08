@@ -1,14 +1,14 @@
 <head>
     <link rel="stylesheet" href="{{ asset(mix('assets/css/demo.css')) }}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
-
 </head>
 
 @extends('layouts/layoutMaster')
 
 @section('box-title')
+
 {{ __('series') . " " . $serie->id }}
+
 @endsection
 
 @section('content')
@@ -136,16 +136,17 @@
 
     .content-container {
         @foreach ($files as $file) @if($file->id ==$serie->cover_id) background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url('{{ asset("storage/{$file->filepath}") }}');
-        @endif @endforeach background-size: 250% 200%;
+        @endif @endforeach background-size: cover;
+        /* Cambié a cover para cubrir completamente el fondo */
         background-position: center;
         background-repeat: no-repeat;
-        padding: 20vh;
+        padding: 25vh;
         font-family: 'Nunito', sans-serif;
     }
 
     .tableshowtexto {
-        margin-top: -15vh;
-        margin-left: -15vh;
+        margin-top: -23vh;
+        margin-left: -23vh;
     }
 
     .tableshowtexto h1 {

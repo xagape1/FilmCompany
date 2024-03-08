@@ -3,8 +3,6 @@ User
 <head>
     <link rel="stylesheet" href="{{ asset(mix('assets/css/demo.css')) }}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
-
 </head>
 
 @extends('layouts/layoutMaster')
@@ -176,7 +174,6 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Agregado para centrar horizontalmente */
         padding: 10px;
     }
 
@@ -211,7 +208,6 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
         max-width: 40vh;
         height: auto;
         border-radius: 12px;
-        /* Ajusta el radio de la esquina de la imagen */
     }
 
     .custom-label {
@@ -225,16 +221,15 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
     .content-container {
         @foreach ($files as $file) @if($file->id ==$serie->cover_id) background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url('{{ asset("storage/{$file->filepath}") }}');
         @endif @endforeach background-size: cover;
-        /* Cambié a cover para cubrir completamente el fondo */
         background-position: center;
         background-repeat: no-repeat;
-        padding: 15vh;
+        padding: 23vh;
         font-family: 'Nunito', sans-serif;
     }
 
     .tableshowtexto {
-        margin-top: -15vh;
-        margin-left: -15vh;
+        margin-top: -20vh;
+        margin-left: -20vh;
     }
 
     .tableshowtexto h1 {

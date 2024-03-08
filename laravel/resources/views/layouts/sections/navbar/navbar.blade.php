@@ -73,8 +73,7 @@ $containerNav = $containerNav ?? 'container-fluid';
         var searchForm = document.querySelector('.searchForm');
 
         function openSearch() {
-          searchForm.style.width = '155vh'; // Ajusta el ancho según tus necesidades
-        }
+          searchForm.style.width = '155vh'; }
 
         function closeSearch() {
           searchForm.style.width = '40px';

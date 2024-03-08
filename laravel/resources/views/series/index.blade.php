@@ -56,7 +56,7 @@ $configData = Helper::appClasses();
                         </div>
                         @foreach ($files as $file)
                         @if($file->id == $serie->cover_id)
-                        <img alt="Portada Pelicula" src='{{ asset("storage/{$file->filepath}") }}' class="movie-cover" />
+                        <img class="movie-cover" alt="Portada Pelicula" src='{{ asset("storage/{$file->filepath}") }}'  />
                         @endif
                         @endforeach
                     </div>
@@ -134,7 +134,6 @@ $configData = Helper::appClasses();
     }
 
     .movie-cover {
-        max-width: 100%;
         height: auto;
         border-radius: 8px;
     }

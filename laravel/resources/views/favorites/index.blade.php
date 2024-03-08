@@ -28,9 +28,11 @@
                     <form method="post" class="favorite-form" action="{{ route('movies.unfavorite', $favoriteMovie) }}" enctype="multipart/form-data">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="favorite-button">
-                            <i class="fa-solid fa-star"></i> Remove Favorite
-                        </button>
+                        <div class="removef">
+                            <button type="submit" class="favorite-button">
+                                <i class="fa-solid fa-star"></i> Remove Favorite
+                            </button>
+                        </div>
                     </form>
                 </div>
             </a>
@@ -57,9 +59,11 @@
                     <form method="post" class="favorite-form" action="{{ route('series.unfavorite', $favoriteSerie) }}" enctype="multipart/form-data">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="favorite-button">
-                            <i class="fa-solid fa-star"></i> Remove Favorite
-                        </button>
+                        <div class="removef">
+                            <button type="submit" class="favorite-button">
+                                <i class="fa-solid fa-star"></i> Remove Favorite
+                            </button>
+                        </div>
                     </form>
                 </div>
             </a>
@@ -86,9 +90,11 @@
                     <form method="post" class="favorite-form" action="{{ route('episodes.unfavorite', $favoriteEpisode) }}" enctype="multipart/form-data">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="favorite-button">
-                            <i class="fa-solid fa-star"></i> Remove Favorite
-                        </button>
+                        <div class="removef">
+                            <button type="submit" class="favorite-button">
+                                <i class="fa-solid fa-star"></i> Remove Favorite
+                            </button>
+                        </div>
                     </form>
                 </div>
             </a>
@@ -97,14 +103,17 @@
     </ul>
     @endif
 
-    @if(count($favoriteMovies) <= 0 && count($favoriteSeries) <= 0 && count($favoriteEpisodes) <= 0)
-    <p class="no-favorites">No favorite items found.</p>
-    @endif
+    @if(count($favoriteMovies) <= 0 && count($favoriteSeries) <=0 && count($favoriteEpisodes) <=0) <p class="no-favorites">No favorite items found.</p>
+        @endif
 </div>
 
 @endrole
 
 <style>
+    .removef {
+        padding: 2px;
+    }
+
     body {
         font-family: 'Nunito', sans-serif;
         margin: 0;
@@ -147,13 +156,12 @@
     }
 
     .header {
-        font-size: 28px;
+        font-size: 21px;
         font-weight: bold;
     }
 
     .cover-image {
         width: 100%;
-        max-width: 100%;
         height: auto;
         border-radius: 8px;
     }

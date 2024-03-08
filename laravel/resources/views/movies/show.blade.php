@@ -26,8 +26,10 @@ $configData = Helper::appClasses();
         @foreach ($files as $file)
         @if($file->id == $movie->intro_id)
         <div>
-            <video class="showvideo" controls>
+            <video class="showvideo" id="myVideo" controls>
                 <source alt="Pelicula" type="video/mp4" src='{{ asset("storage/{$file->filepath}") }}' />
+                <source alt="Pelicula" type="video/webm" src='{{ asset("storage/{$file->filepath}") }}' />
+                Tu navegador no soporta el tag de video.
             </video>
         </div>
         @endif
@@ -41,7 +43,6 @@ $configData = Helper::appClasses();
                 <tr>
                     <td class="synopsis">{{ $movie->description }}</td>
                 </tr>
-
                 </tbody>
             </table>
         </div>
@@ -103,7 +104,6 @@ $configData = Helper::appClasses();
 
     @role('admin')
     <div class="showtexto">
-        <!-- Buttons -->
         <a class="btn btn-secondary" href="{{ route('movies.edit', $movie) }}" role="button">📝 {{ __('Edit Movie')
             }}</a>
         <form id="form" method="POST" action="{{ route('movies.destroy', $movie) }}" style="display: inline-block;">
@@ -112,7 +112,6 @@ $configData = Helper::appClasses();
             <button id="destroy" type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">🗑️ {{ __('Delete Movie') }}</button>
         </form>
 
-        <!-- Modal -->
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -135,3 +134,13 @@ $configData = Helper::appClasses();
     </div>
     @endrole
     @endsection
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var video = document.querySelector('.showvideo');
+
+            video.addEventListener('loadedmetadata', function() {
+                // Metadatos cargados, puedes realizar acciones aquí
+            });
+        });
+    </script>
