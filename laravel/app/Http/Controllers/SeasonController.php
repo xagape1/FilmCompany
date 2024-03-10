@@ -79,11 +79,7 @@ class SeasonController extends Controller
         ]);
     }
 
-    // public function edit($id)
-    // {
-    //     $season = Season::find($id);
-    //     return view('seasons.edit', compact('season'));
-    // }
+
     public function edit(Season $season)
     {
         return view("seasons.edit", [

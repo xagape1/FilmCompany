@@ -24,7 +24,6 @@
         @if ($hasContentInGenre)
         <section class="genre-section">
             <h2>{{ $genre->name }}</h2>
-
             <!-- Películas -->
             @if ($hasMoviesInGenre)
             <div class="movie-container">
@@ -101,9 +100,8 @@
         @endif
         @endif
 </div>
+
 @endrole
-
-
 @endsection
 
 <style>

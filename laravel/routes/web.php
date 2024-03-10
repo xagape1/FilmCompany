@@ -51,6 +51,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/series/{serie}/seasons', 'SeasonController@index')->name('seasons.index');
     Route::get('/series/{serie}/seasons/{season}', 'SeasonController@show')->name('series.seasons.show');
 
+    Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+
+
     Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
     Route::get('/movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
 

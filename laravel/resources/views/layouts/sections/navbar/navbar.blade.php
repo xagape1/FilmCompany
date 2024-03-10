@@ -27,8 +27,7 @@ $containerNav = $containerNav ?? 'container-fluid';
 
     <!-- ! Not required for layout-without-menu -->
     @if(!isset($navbarHideToggle))
-    <div
-      class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0{{ isset($menuHorizontal) ? ' d-xl-none ' : '' }} {{ isset($contentNavbar) ?' d-xl-none ' : '' }}">
+    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0{{ isset($menuHorizontal) ? ' d-xl-none ' : '' }} {{ isset($contentNavbar) ?' d-xl-none ' : '' }}">
       <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
         <i class="bx bx-menu bx-sm"></i>
       </a>
@@ -45,44 +44,16 @@ $containerNav = $containerNav ?? 'container-fluid';
       </div>
 
       <div class="search-toggle">
-        <form class="searchForm" action="{{ route('series.index') }} " method="GET">
+        <form class="searchForm" action="{{ route('search.index') }}" method="GET">
           <div class="input-group">
             <div class="searchInputContainer">
               <input type="text" name="busqueda" class="botonbuscar" value="{{ request('busqueda') }}" placeholder="🔍">
             </div>
+            <!-- Agregamos un campo oculto con el valor "both" -->
+            <input type="hidden" name="searchType" value="both">
           </div>
         </form>
       </div>
-
-      <style>
-        .searchInputContainer {
-          display: flex;
-        }
-
-        .searchForm {
-          width: 40px;
-          /* Ancho inicial */
-          overflow: hidden;
-          /* Oculta el contenido que se desborda */
-          transition: width 0.3s ease-in-out;
-          /* Transición suave */
-        }
-      </style>
-
-      <script>
-        var searchForm = document.querySelector('.searchForm');
-
-        function openSearch() {
-          searchForm.style.width = '155vh'; }
-
-        function closeSearch() {
-          searchForm.style.width = '40px';
-        }
-
-        // Asigna eventos desde el script
-        document.querySelector('.search-toggle').addEventListener('mouseenter', openSearch);
-        document.querySelector('.search-toggle').addEventListener('mouseleave', closeSearch);
-      </script>
 
       <!--/ Style Switcher -->
 
@@ -102,20 +73,16 @@ $containerNav = $containerNav ?? 'container-fluid';
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
           <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
             <div class="avatar avatar-online">
-              <img src="{{ Auth::user() ? Auth::user()->profile_photo_url : asset('assets/img/avatars/1.png') }}" alt
-                class="rounded-circle">
+              <img src="{{ Auth::user() ? Auth::user()->profile_photo_url : asset('assets/img/avatars/1.png') }}" alt class="rounded-circle">
             </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item"
-                href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
+              <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
                 <div class="d-flex">
                   <div class="flex-shrink-0 me-3">
                     <div class="avatar avatar-online">
-                      <img
-                        src="{{ Auth::user() ? Auth::user()->profile_photo_url : asset('assets/img/avatars/1.png') }}"
-                        alt class="rounded-circle">
+                      <img src="{{ Auth::user() ? Auth::user()->profile_photo_url : asset('assets/img/avatars/1.png') }}" alt class="rounded-circle">
                     </div>
                   </div>
                   <div class="flex-grow-1">
@@ -134,8 +101,7 @@ $containerNav = $containerNav ?? 'container-fluid';
               <div class="dropdown-divider"></div>
             </li>
             <li>
-              <a class="dropdown-item"
-                href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
+              <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
                 <i class="bx bx-user me-2"></i>
                 <span class="align-middle">My Profile</span>
               </a>
@@ -159,8 +125,7 @@ $containerNav = $containerNav ?? 'container-fluid';
               <div class="dropdown-divider"></div>
             </li>
             <li>
-              <a class="dropdown-item"
-                href="{{ Auth::user() ? route('teams.show', Auth::user()->currentTeam->id) : 'javascript:void(0)' }}">
+              <a class="dropdown-item" href="{{ Auth::user() ? route('teams.show', Auth::user()->currentTeam->id) : 'javascript:void(0)' }}">
                 <i class='bx bx-cog me-2'></i>
                 <span class="align-middle">Team Settings</span>
               </a>
@@ -196,8 +161,7 @@ $containerNav = $containerNav ?? 'container-fluid';
             </li>
             @if (Auth::check())
             <li>
-              <a class="dropdown-item" href="{{ route('logout') }}"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class='bx bx-power-off me-2'></i>
                 <span class="align-middle">Logout</span>
               </a>

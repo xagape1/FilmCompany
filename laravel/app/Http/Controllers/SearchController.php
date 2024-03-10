@@ -6,24 +6,45 @@ use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Serie;
 use App\Models\Episode;
+use App\Models\File;
+use App\Models\Genre;
+use App\Models\Season;
 
 class SearchController extends Controller
 {
-    public function search(Request $request)
+    public function index(Request $request)
     {
         $busqueda = $request->busqueda;
-        $contentType = $request->content_type;
+        $searchType = $request->searchType;
 
-        if ($contentType === 'movies') {
-            $results = Movie::where('title', 'LIKE', '%' . $busqueda . '%')->get();
-        } elseif ($contentType === 'series') {
-            $results = Serie::where('title', 'LIKE', '%' . $busqueda . '%')->get();
-        } elseif ($contentType === 'episodes') {
-            $results = Episode::where('title', 'LIKE', '%' . $busqueda . '%')->get();
-        } 
+        $moviesQuery = Movie::query();
+        $seriesQuery = Serie::query();
 
-        return view('search.index', [
-            'results' => $results,
-        ]);
+        if ($busqueda) {
+            if ($searchType == 'movies' || $searchType == 'both') {
+                $moviesQuery->where('title', 'LIKE', '%' . $busqueda . '%');
+            }
+
+            if ($searchType == 'series' || $searchType == 'both') {
+                $seriesQuery->where('title', 'LIKE', '%' . $busqueda . '%');
+            }
+        }
+
+        $movies = $moviesQuery->get();
+        $series = $seriesQuery->get();
+
+        $files = File::all();
+        $genres = Genre::all();
+        $seasons = Season::all();
+
+        $data = [
+            'movies' => $movies,
+            'series' => $series,
+            'files' => $files,
+            'genres' => $genres,
+            'seasons' => $seasons,
+        ];
+
+        return view('search.index', $data);
     }
 }
