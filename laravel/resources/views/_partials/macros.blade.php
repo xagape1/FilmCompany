@@ -1,1 +1,1 @@
-<img class="avatar" src="images\logosinfilm.png" srcset="images\logosinfilm.png" alt="Film Company">
+<img class="avatar" src="{{ asset('images/logosinfilm.png') }}" srcset="{{ asset('images/logosinfilm.png') }}" alt="Film Company">
