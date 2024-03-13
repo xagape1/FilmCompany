@@ -17,9 +17,10 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        $adminRole = Role::create(['name' => 'admin']);
-        $newRole = Role::create(['name' => 'new']);
-        $payRole = Role::create(['name' => 'pay']);
+        $newRole = Role::firstOrCreate(['name' => 'new', 'guard_name' => 'web']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $payRole = Role::firstOrCreate(['name' => 'pay', 'guard_name' => 'web']);
+
         Permission::create(['name' => 'movies.*']);
         Permission::create(['name' => 'movies.list']);
         Permission::create(['name' => 'movies.create']);
@@ -48,19 +49,43 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'episodes.read']);
         Permission::create(['name' => 'episodes.delete']);
 
-        $adminRole->givePermissionTo(['movies.*','series.*','seasons.*','episodes.*' ]);
+        $adminRole->givePermissionTo(['movies.*', 'series.*', 'seasons.*', 'episodes.*']);
         $newRole->givePermissionTo(['']);
-        $payRole->givePermissionTo(['movies.list','movies.read','seasons.list','seasons.read','episodes.list','episodes.read' ]);
+        $payRole->givePermissionTo(['movies.list', 'movies.read', 'seasons.list', 'seasons.read', 'episodes.list', 'episodes.read']);
 
-        $user = User::find(1);
+        $user1 = User::find(1);
+        $user2 = User::find(2);
 
+        // USER ADMIN DEFAULT
 
-        if ($user) {
-            $user->assignRole($adminRole);
-        } else { echo "Usuario no encontrado.";
+        if ($user1) {
+            $user1->assignRole($adminRole);
+        } else {
+            echo "User not found..";
+        }   
+
+        if ($user1->hasRole($newRole)) {
+
+            $user1->removeRole($newRole);
+            echo "Rol deleted successfully.";
+        } else {
+            echo "The user no have rol default.";
         }
 
+        // USER PAY DEFAULT
 
+        if ($user2) {
+            $user2->assignRole($payRole);
+        } else {
+            echo "User not found.";
+        }
 
+        if ($user2->hasRole($newRole)) {
+
+            $user2->removeRole($newRole);
+            echo "Rol deleted successfully.";
+        } else {
+            echo "The user no have rol default.";
+        }
     }
 }

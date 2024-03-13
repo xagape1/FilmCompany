@@ -12,6 +12,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable
 {
@@ -35,13 +36,26 @@ class User extends Authenticatable
         'password',
     ];
 
-    // protected static function booted()
-    // {
-    //     static::created(function ($user) {
-    //         // Asignar el rol por defecto al usuario recién creado
-    //         $user->assignRole('new');
-    //     });
-    // }
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $newRole = Role::firstOrCreate(['name' => 'new', 'guard_name' => 'web']);
+            $user->assignRole($newRole);
+        });
+    }
+    public function subscription()
+    {
+        if ($this->hasRole('newrole')) {
+            $newRole = Role::where('name', 'newrole')->first();
+            $payRole = Role::firstOrCreate(['name' => 'pay', 'guard_name' => 'web']);
+
+            if ($newRole) {
+                $this->removeRole($newRole);
+                $this->assignRole($payRole);
+            }
+        }
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -87,11 +101,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Serie::class, 'favorites');
     }
-    
+
     public function favoritedE()
     {
         return $this->belongsToMany(Episode::class, 'favorites');
     }
-
-
 }

@@ -15,16 +15,16 @@ class UserSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        $admin = new User([
-            'name' => 'xagape',
-            'email' => 'xagape@fp.insjoaquimmir.cat',
-            'email_verified_at' => Carbon::now(),
-            'password' => '12345678',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-        $admin->save();
-    }
+    // public function run()
+    // {
+    //     $admin = new User([
+    //         'name' => 'xagape',
+    //         'email' => 'xagape@fp.insjoaquimmir.cat',
+    //         'email_verified_at' => Carbon::now(),
+    //         'password' => '12345678',
+    //         'created_at' => Carbon::now(),
+    //         'updated_at' => Carbon::now(),
+    //     ]);
+    //     $admin->save();
+    // }
 }
