@@ -64,7 +64,10 @@
         </div>
     </div>
 
-    <button id="subscribeButton" class="subscribe-button" onclick="subscribe()">Subscribe</button>
+    <form method="POST" action="{{ route('handleSubscription') }}">
+        @csrf
+        <button type="submit" name="subscribeButton">Subscribe</button>
+    </form>
 </div>
 
 <script>
@@ -92,6 +95,7 @@
     function subscribe() {
         if (selectedPlan) {
             alert(`Subscribed to ${selectedPlan} plan!`);
+            route("subscribe");
         } else {
             alert('Please select a subscription plan.');
         }

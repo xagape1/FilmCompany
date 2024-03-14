@@ -9,6 +9,8 @@ use App\Models\Episode;
 use App\Models\File;
 use App\Models\Genre;
 use App\Models\Season;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class SearchController extends Controller
 {
@@ -46,5 +48,21 @@ class SearchController extends Controller
         ];
 
         return view('search.index', $data);
+    }
+    public function handleSubscription()
+    {
+      $user = Auth::user();
+  
+      if ($user->hasRole('new')) {
+        $removeNew = Role::where('name', 'new')->first();
+        $addPay = Role::firstOrCreate(['name' => 'pay', 'guard_name' => 'web']);
+  
+        if ($removeNew) {
+          $user->removeRole($removeNew);
+          $user->assignRole($addPay);
+        }
+      }
+  
+      return redirect()->route('pages-home');
     }
 }

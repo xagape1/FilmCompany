@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class MovieController extends Controller
 {
@@ -242,5 +243,21 @@ class MovieController extends Controller
             ->delete();
 
         return redirect()->back();
+    }
+    public function handleSubscription()
+    {
+      $user = Auth::user();
+  
+      if ($user->hasRole('new')) {
+        $removeNew = Role::where('name', 'new')->first();
+        $addPay = Role::firstOrCreate(['name' => 'pay', 'guard_name' => 'web']);
+  
+        if ($removeNew) {
+          $user->removeRole($removeNew);
+          $user->assignRole($addPay);
+        }
+      }
+  
+      return redirect()->route('pages-home'); // Redirige según sea necesario
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\pages\HomePage;
 use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SerieController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\EpisodeController;
+use App\Models\Favorite;
 
 $controller_path = 'App\Http\Controllers';
 
@@ -22,6 +24,10 @@ Route::middleware([
 
     Route::get('/', $controller_path . '\pages\HomePage@index')->name('pages-home');
 });
+
+Route::post('/subscribe', [HomePage::class, 'handleSubscription'])->name('handleSubscription')->middleware(['auth']);
+
+
 
 /**
  * 

@@ -13,6 +13,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -43,18 +44,25 @@ class User extends Authenticatable
             $user->assignRole($newRole);
         });
     }
+
     public function subscription()
     {
-        if ($this->hasRole('newrole')) {
-            $newRole = Role::where('name', 'newrole')->first();
-            $payRole = Role::firstOrCreate(['name' => 'pay', 'guard_name' => 'web']);
-
-            if ($newRole) {
-                $this->removeRole($newRole);
-                $this->assignRole($payRole);
+        $user = Auth::user();
+        $newRole = Role::find('new');
+        
+        if ($user->hasRole($newRole->name)) {
+            $removeNew = Role::where('name', 'new')->first();
+            $addPay = Role::firstOrCreate(['name' => 'pay', 'guard_name' => 'web']);
+    
+            if ($removeNew) {
+                $user->removeRole($removeNew);
+                $user->assignRole($addPay);
             }
         }
     }
+    
+
+
 
 
     /**
