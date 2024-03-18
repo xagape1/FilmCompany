@@ -162,7 +162,7 @@ $configData = Helper::appClasses();
                 </div>
                 @endforeach
                 @else
-                <p>There are no reviews, write your opinion about the episode$episode!!</p>
+                <p>There are no reviews, write your opinion about the episode!!</p>
                 @endif
             </div>
         </div>

@@ -232,7 +232,7 @@ $episodesInSeason = $episodes->where('season_id', $season->id);
         border-radius: 8px;
         text-align: center;
         transition: box-shadow 0.3s;
-        max-width: 100%;
+        max-width: 42%;
         margin-right: 10px;
         margin-bottom: 10px;
         scroll-snap-align: start;
