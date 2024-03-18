@@ -112,15 +112,21 @@ class EpisodeController extends Controller
         $id = auth()->id();
 
         $comments = $episode->comments;
+        $season = $episode->season;
+        $serie = $season->serie;
+
         return view('episodes.show', [
             'episode' => $episode,
             'series' => Serie::all(),
-            'seasons' => Season::all(),
+            'season' => $season,
+            'serie' => $serie,
             'files' => File::all(),
             'comments' => $comments,
             'id' => $id,
         ]);
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

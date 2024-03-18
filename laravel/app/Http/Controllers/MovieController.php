@@ -258,6 +258,6 @@ class MovieController extends Controller
         }
       }
   
-      return redirect()->route('pages-home'); // Redirige según sea necesario
+      return redirect()->route('movie.index'); // Redirige según sea necesario
     }
 }

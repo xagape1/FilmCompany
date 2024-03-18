@@ -239,6 +239,7 @@ $configData = Helper::appClasses();
         height: auto;
         border-radius: 8px;
     }
+
     .subscription-container {
         padding: 20px;
         border-radius: 8px;

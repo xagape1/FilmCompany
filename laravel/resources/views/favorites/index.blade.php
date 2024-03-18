@@ -1,6 +1,6 @@
 @extends('layouts.layoutMaster')
 
-@section('title', 'Favoritos')
+@section('title', 'Favorites')
 
 @section('content')
 @role('new')
@@ -70,37 +70,7 @@
     </form>
 </div>
 
-<script>
-    let selectedPlan = null;
 
-    function selectPlan(plan) {
-        selectedPlan = plan;
-        updatePlanStyles();
-    }
-
-    function updatePlanStyles() {
-        const planOptions = document.querySelectorAll('.plan-option');
-        planOptions.forEach(option => {
-            const plan = option.innerText.toLowerCase();
-            if (plan === selectedPlan) {
-                option.style.backgroundColor = '#3498db';
-                option.style.color = '#fff';
-            } else {
-                option.style.backgroundColor = '';
-                option.style.color = '';
-            }
-        });
-    }
-
-    function subscribe() {
-        if (selectedPlan) {
-            alert(`Subscribed to ${selectedPlan} plan!`);
-            route("subscribe");
-        } else {
-            alert('Please select a subscription plan.');
-        }
-    }
-</script>
 
 @endrole
 @role('admin|pay')
@@ -112,7 +82,7 @@
 
     @if(count($favoriteMovies) > 0)
     <div class="header">
-        <h1 class="title">FAVORITES MOVIES</h1>
+        <h1 class="title">Favorites Movies</h1>
     </div>
     <ul class="movie-list">
         @foreach ($favoriteMovies as $favoriteMovie)
@@ -143,7 +113,7 @@
 
     @if(count($favoriteSeries) > 0)
     <div class="header">
-        <h1 class="title">FAVORITES SERIES</h1>
+        <h1 class="title">Favorites Series</h1>
     </div>
     <ul class="movie-list">
         @foreach ($favoriteSeries as $favoriteSerie)
@@ -174,7 +144,7 @@
 
     @if(count($favoriteEpisodes) > 0)
     <div class="header">
-        <h1 class="title">FAVORITES EPISODES</h1>
+        <h1 class="title">Favorites Episodes</h1>
     </div>
     <ul class="movie-list">
         @foreach ($favoriteEpisodes as $favoriteEpisode)
